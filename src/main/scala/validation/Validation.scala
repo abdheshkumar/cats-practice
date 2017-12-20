@@ -104,11 +104,11 @@ sealed trait FormValidatorNel {
     if (age >= 18 && age <= 75) age.validNel else AgeIsInvalid.invalidNel
 
   def validateForm(username: String, password: String, firstName: String, lastName: String, age: Int): ValidationResult[RegistrationData] = {
-    (validateUserName(username),
-      validatePassword(password),
-      validateFirstName(firstName),
-      validateLastName(lastName),
-      validateAge(age)).mapN(RegistrationData)
+    (validateUserName(username) |@|
+      validatePassword(password) |@|
+      validateFirstName(firstName) |@|
+      validateLastName(lastName) |@|
+      validateAge(age)).map(RegistrationData)
   }
 
 }
@@ -127,6 +127,6 @@ object ValidationApp extends App {
 
   import cats.implicits._
 
-  val result1 = (Some(1), None: Option[Int], Some(2)).mapN((a, b, c) => (a, b, c))
-  println(result1)
+  //val result1 = (Some(1), None: Option[Int], Some(2)).map((a, b, c) => (a, b, c))
+  //println(result1)
 }
