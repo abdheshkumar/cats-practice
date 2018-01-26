@@ -38,7 +38,7 @@ object CircleApp extends App {
     case Left(ex) => println(ex)
     case Right(json) =>
       val cells = (json.as[Cells])
-      println(cells.map(_.cells.length))
+      println(cells)
   }
 
 }
