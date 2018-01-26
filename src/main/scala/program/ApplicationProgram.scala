@@ -1,0 +1,5 @@
+package program
+
+class ApplicationProgram {
+
+}

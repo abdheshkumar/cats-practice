@@ -1,0 +1,5 @@
+package algebra
+
+trait Presenter {
+
+}
