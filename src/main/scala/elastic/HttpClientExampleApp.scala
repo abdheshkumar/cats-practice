@@ -2,12 +2,10 @@ package elastic
 import com.sksamuel.elastic4s.{ElasticsearchClientUri, RefreshPolicy}
 import com.sksamuel.elastic4s.http.{HttpClient, RequestFailure, RequestSuccess}
 import com.sksamuel.elastic4s.http.search.SearchResponse
-object HttpClientExampleApp extends App {
+object HttpClientExampleApp extends ElasticClient {
 
   // you must import the DSL to use the syntax helpers
   import com.sksamuel.elastic4s.http.ElasticDsl._
-
-  val client = HttpClient(ElasticsearchClientUri("localhost", 9200))
 
   client.execute {
     bulk(
