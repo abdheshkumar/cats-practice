@@ -1,11 +1,10 @@
 package applicative
 
-import cats.{Applicative, Traverse}
 import cats.implicits._
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.util.control.Exception._
-import scala.concurrent.ExecutionContext.Implicits.global
 
 object ApplicativeApp extends App {
   val m: Map[Int, String] = Map(1 -> "Hi", 2 -> "There", 3 -> "you")
@@ -22,14 +21,14 @@ object ApplicativeApp extends App {
 
   val result: List[Option[(Int, Int)]] = (Option(1), Option(2)).traverseN {
     (a, b) =>
-      println("::::" + (a, b))
+      println(s"::::${(a, b)}")
       List((a, b))
   }
   println(result)
 
   val result1: Option[List[(Int, Int)]] = (List(1), List(2)).traverseN {
     (a, b) =>
-      println("::::" + (a, b))
+      println(s"::::${(a, b)}")
       Option((a, b))
   }
   println(result1)
@@ -42,10 +41,10 @@ object ApplicativeApp extends App {
   val r3: Future[Option[Int]] = Option(12).traverse(f => Future.successful(f))
   println(r3)
 
-  val r4: List[Either[Int, String]] = Either.right[List[Int],List[String]](List("1", "2")).bisequence
+  val r4: List[Either[Int, String]] = Either.right[List[Int], List[String]](List("1", "2")).bisequence
   println(r4)
 
-  val r5= (Option(1),Option("2")).bisequence
+  val r5 = (Option(1), Option("2")).bisequence
   println(r5)
 
 }

@@ -70,9 +70,9 @@ object TypeClasses extends App {
       def zero: (A, B) = (ca.zero, cb.zero)
     }
 
-  (1, true) |+| (2, true) |+| (3, true)
+  ((1 -> true) |+| (2 -> true)) |+| (3 -> true)
 
-  (List('a', 'b'), 5) |+| (List('d', 'e'), 10)
+  (List('a', 'b') -> 5) |+| (List('d', 'e') -> 10)
 
   List((1, 2), (3, 4)).gsum
 

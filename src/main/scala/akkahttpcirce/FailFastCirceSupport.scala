@@ -7,7 +7,6 @@ import akka.http.scaladsl.model.{ContentType, ContentTypeRange, HttpEntity, Medi
 import akka.http.scaladsl.unmarshalling.{FromEntityUnmarshaller, Unmarshaller}
 import akka.util.ByteString
 import cats.data.NonEmptyList
-import cats.syntax.show._
 import io.circe._
 
 import scala.collection.immutable.Seq

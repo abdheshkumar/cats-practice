@@ -1,7 +1,7 @@
 package elastic
-import com.sksamuel.elastic4s.{ElasticsearchClientUri, RefreshPolicy}
-import com.sksamuel.elastic4s.http.{HttpClient, RequestFailure, RequestSuccess}
+import com.sksamuel.elastic4s.RefreshPolicy
 import com.sksamuel.elastic4s.http.search.SearchResponse
+import com.sksamuel.elastic4s.http.{RequestFailure, RequestSuccess}
 object HttpClientExampleApp extends ElasticClient {
 
   // you must import the DSL to use the syntax helpers

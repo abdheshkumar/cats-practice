@@ -82,7 +82,6 @@ case class RegistrationData(validatedUserName: String, validatedPassword: String
 
 sealed trait FormValidatorNel {
 
-  import cats._
   import cats.implicits._
 
   type ValidationResult[A] = ValidatedNel[DomainValidation, A]
@@ -104,11 +103,11 @@ sealed trait FormValidatorNel {
     if (age >= 18 && age <= 75) age.validNel else AgeIsInvalid.invalidNel
 
   def validateForm(username: String, password: String, firstName: String, lastName: String, age: Int): ValidationResult[RegistrationData] = {
-    (validateUserName(username) |@|
-      validatePassword(password) |@|
-      validateFirstName(firstName) |@|
-      validateLastName(lastName) |@|
-      validateAge(age)).map(RegistrationData)
+    (validateUserName(username),
+      validatePassword(password),
+      validateFirstName(firstName),
+      validateLastName(lastName),
+      validateAge(age)).mapN(RegistrationData)
   }
 
 }
@@ -124,8 +123,6 @@ object ValidationApp extends App {
     age = 15
   )
   println(result)
-
-  import cats.implicits._
 
   //val result1 = (Some(1), None: Option[Int], Some(2)).map((a, b, c) => (a, b, c))
   //println(result1)
