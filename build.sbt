@@ -11,7 +11,8 @@ lazy val root = project.in(file("."))
     name := "cats-practice",
     version := "1.0",
     scalaVersion := "2.12.4",
-   // scalacOptions ++= ScalaC.options,
+    scalacOptions += "-Ypartial-unification",
+    // scalacOptions ++= ScalaC.options,
     libraryDependencies ++= circeLibrary ++ `akka-http` ++ freestyle ++ scalaTest ++
       `cats-effect` ++ cats ++ elastic4s ++ jose4j ++ alpakka ++ kantanCsv ++ shapeless,
     addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.4"))

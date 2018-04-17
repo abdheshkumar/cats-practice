@@ -1,6 +1,9 @@
 package scalacheck_examples
 
+import akka.actor.Actor
 import org.scalacheck.Arbitrary
+
+import scala.concurrent.Future
 
 object ScalaCheckApp extends App {
 
@@ -94,7 +97,17 @@ object ScalaCheckApp extends App {
   }
   check.check
 
+
   val genIntList: Gen[List[Int]] = Gen.containerOf[List, Int](Gen.oneOf(1, 3, 5))
 
   val genBoolArray: Gen[Array[Boolean]] = Gen.containerOf[Array, Boolean](true)
+  val strGenAl = for {
+    firstName <- Gen.alphaStr
+    lastName <- Gen.alphaStr
+    email <- Gen.alphaStr
+    emailDomain <- Gen.oneOf("callhandling.co.uk", "gmail.com")
+  } yield s"$firstName,$lastName,$email@$emailDomain"
+
+  val csvData = Gen.listOfN(5, strGenAl)
+  println(csvData.sample.toList.flatten.mkString("\n"))
 }
