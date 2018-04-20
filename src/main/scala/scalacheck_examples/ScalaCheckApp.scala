@@ -110,4 +110,25 @@ object ScalaCheckApp extends App {
 
   val csvData = Gen.listOfN(5, strGenAl)
   println(csvData.sample.toList.flatten.mkString("\n"))
+
+  case class User(name: String)
+
+  case class Person(name: String, age: Int, user: Option[User])
+
+  implicit def arbOption: Arbitrary[Option[User]] = Arbitrary(Gen.option(Gen.resultOf(User)))
+
+  val people = Gen.resultOf(Person) // case class trick - generate random instances if there are implicit generators for the constructor parameters:
+  val p = forAll(people) { p =>
+    println(p)
+    true
+
+  }
+  p.check
+  /*
+  object Person {  }
+  val people1 = Gen.resultOf(Person.apply _) //When you have companion object
+   */
+  println("People" + people.sample)
+
+
 }

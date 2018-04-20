@@ -48,5 +48,5 @@ object Dependencies {
     "com.sksamuel.elastic4s" %% "elastic4s-embedded" % elastic4sVersion % "test"
   )
   val cats = Seq("org.typelevel" %% "cats-core" % "1.0.1" withSources())
-  val `cats-effect` = Seq("org.typelevel" %% "cats-effect" % "0.5")
+  val `cats-effect` = Seq("org.typelevel" %% "cats-effect" % "1.0.0-RC")
 }
