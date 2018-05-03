@@ -4,14 +4,11 @@ import io.circe.generic.extras._
 import io.circe.syntax._
 import io.circe.{Decoder, Encoder}
 import io.circe.generic.auto._
+import java.text.SimpleDateFormat
+import java.util.Date
+import scala.util.Try
+
 object CirceEncoderDecoder extends App {
-
-  import java.text.SimpleDateFormat
-  import java.util.Date
-
-
-
-  import scala.util.Try
 
 
   @ConfiguredJsonCodec case class Bar(@JsonKey("my-int") i: Int, s: String, d: Date)
