@@ -9,7 +9,8 @@ object Dependencies {
   lazy val circeLibrary = Seq(
     "io.circe" %% "circe-core",
     "io.circe" %% "circe-generic",
-    "io.circe" %% "circe-parser"
+    "io.circe" %% "circe-parser",
+    "io.circe" %% "circe-generic-extras"
   ).map(_ % circeVersion)
   lazy val `akka-http` = Seq(
     "com.typesafe.akka" %% "akka-http" % "10.0.11",
