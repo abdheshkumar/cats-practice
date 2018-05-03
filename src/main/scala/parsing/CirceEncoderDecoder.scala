@@ -1,9 +1,11 @@
 package parsing
 
+import akka.http.scaladsl.model.Uri
 import io.circe._
 import io.circe.generic.auto._
-
+import io.circe.generic.extras._
 object CirceEncoderDecoder extends App {
+
   import java.text.SimpleDateFormat
   import java.util.Date
 
@@ -18,10 +20,12 @@ object CirceEncoderDecoder extends App {
 
   object Bar {
     private[this] def fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZ")
+
     implicit val config: Configuration = Configuration.default
     implicit val dateEncoder: Encoder[Date] = Encoder[String].contramap(fmt.format)
     implicit val dateDecoder: Decoder[Date] = Decoder[String].emapTry(str => Try(fmt.parse(str)))
   }
 
-  Bar(13, "Qux", new Date).asJson
+  println(Bar(13, "Qux", new Date).asJson)
+
 }
