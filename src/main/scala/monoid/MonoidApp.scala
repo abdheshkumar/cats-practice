@@ -6,10 +6,10 @@ import cats.implicits._
 object MonoidApp extends App {
 
   case class Cat(
-                  name: String,
-                  yearOfBirth: Int,
-                  favoriteFoods: List[String]
-                )
+                      name: String,
+                      yearOfBirth: Int,
+                      favoriteFoods: List[String]
+  )
 
   val tupleToCat: (String, Int, List[String]) => Cat =
     Cat.apply _

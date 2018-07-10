@@ -15,6 +15,8 @@ object FreestyleApp extends App {
   ApplicationProgram.program("Test").interpret[Future]
 }
 
-object Implicits extends Interpreters
-  with FreeSInstances
-  with cats.syntax.AllSyntax with cats.instances.AllInstances
+object Implicits
+    extends Interpreters
+    with FreeSInstances
+    with cats.syntax.AllSyntax
+    with cats.instances.AllInstances

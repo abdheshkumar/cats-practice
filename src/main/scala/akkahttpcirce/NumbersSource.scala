@@ -4,7 +4,7 @@ import akka.stream.stage.{GraphStage, GraphStageLogic, OutHandler}
 import akka.stream.{Attributes, Outlet, SourceShape}
 
 class NumbersSource extends GraphStage[SourceShape[Int]] {
-  val out: Outlet[Int] = Outlet("NumbersSource")
+  val out: Outlet[Int]                 = Outlet("NumbersSource")
   override val shape: SourceShape[Int] = SourceShape(out)
 
   override def createLogic(inheritedAttributes: Attributes): GraphStageLogic =

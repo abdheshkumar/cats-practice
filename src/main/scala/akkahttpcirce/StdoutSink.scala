@@ -4,7 +4,7 @@ import akka.stream.{Attributes, Inlet, SinkShape}
 import akka.stream.stage.{GraphStage, GraphStageLogic, InHandler}
 
 class StdoutSink extends GraphStage[SinkShape[Int]] {
-  val in: Inlet[Int] = Inlet("StdoutSink")
+  val in: Inlet[Int]                 = Inlet("StdoutSink")
   override val shape: SinkShape[Int] = SinkShape(in)
 
   override def createLogic(inheritedAttributes: Attributes): GraphStageLogic =

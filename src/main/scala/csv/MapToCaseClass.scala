@@ -13,7 +13,7 @@ object MapToCaseClass extends App {
   val schema = Schema.of[Foo]
 
   val result = schema.readFrom(m)
-  val error = schema.readFrom(e)
+  val error  = schema.readFrom(e)
   println(result)
   println(error)
 }

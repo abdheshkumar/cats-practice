@@ -1,9 +1,6 @@
 package scalacheck_examples
 
-import akka.actor.Actor
 import org.scalacheck.Arbitrary
-
-import scala.concurrent.Future
 
 object ScalaCheckApp extends App {
 
@@ -19,16 +16,20 @@ object ScalaCheckApp extends App {
 
   fixedLengthStr.check
 
-
   case class Account(accountId: String, balance: Double, country: String)
 
-  case class Customer(customerId: String, name: String, nationality: String, accounts: Seq[Account])
+  case class Customer(
+                      customerId: String,
+                      name: String,
+                      nationality: String,
+                      accounts: Seq[Account]
+  )
 
   // Account generator - only Benelux accounts
   val genAccount = for {
     accountId <- Gen.identifier
-    balance <- Arbitrary.arbitrary[Double]
-    country <- Gen.oneOf("NL", "BE", "LU")
+    balance   <- Arbitrary.arbitrary[Double]
+    country   <- Gen.oneOf("NL", "BE", "LU")
   } yield Account(accountId, balance, country)
 
   val account = forAll(genAccount) { s =>
@@ -38,10 +39,10 @@ object ScalaCheckApp extends App {
 
   // Forcing customers to be Dutch will be as easy as:
   val genDutchCustomer = for {
-    customerId <- Gen.identifier
-    name <- Arbitrary.arbitrary[String].suchThat(_.nonEmpty)
+    customerId  <- Gen.identifier
+    name        <- Arbitrary.arbitrary[String].suchThat(_.nonEmpty)
     nationality <- Gen.const("NL")
-    accounts <- Gen.nonEmptyListOf(genAccount)
+    accounts    <- Gen.nonEmptyListOf(genAccount)
   } yield Customer(customerId, name, nationality, accounts)
 
   val customer = forAll(genDutchCustomer) { s =>
@@ -56,20 +57,21 @@ object ScalaCheckApp extends App {
   case object Leaf extends Tree
 
   import org.scalacheck._
-  import Gen._
   import Arbitrary.arbitrary
+  import Gen._
 
   val genLeaf = const(Leaf)
 
   val genNode = for {
-    v <- arbitrary[Int]
-    left <- genTree
+    v     <- arbitrary[Int]
+    left  <- genTree
     right <- genTree
   } yield Node(left, right, v)
 
   def genTree: Gen[Tree] = oneOf(genLeaf, genNode)
 
-  val genStringStream = Gen.containerOf[Stream, String](Gen.alphaStr)
+  val genStringStream: Gen[Stream[String]] =
+    Gen.containerOf[Stream, String](Gen.alphaStr)
   println(genStringStream.sample)
 
   val evenInteger = Arbitrary.arbitrary[Int] suchThat (_ % 2 == 0)
@@ -86,7 +88,7 @@ object ScalaCheckApp extends App {
   import org.scalacheck.Prop.forAll
 
   val fooGen = for {
-    intValue <- Gen.posNum[Int]
+    intValue  <- Gen.posNum[Int]
     charValue <- Gen.alphaChar
   } yield Foo(intValue, charValue)
 
@@ -97,14 +99,14 @@ object ScalaCheckApp extends App {
   }
   check.check
 
-
-  val genIntList: Gen[List[Int]] = Gen.containerOf[List, Int](Gen.oneOf(1, 3, 5))
+  val genIntList: Gen[List[Int]] =
+    Gen.containerOf[List, Int](Gen.oneOf(1, 3, 5))
 
   val genBoolArray: Gen[Array[Boolean]] = Gen.containerOf[Array, Boolean](true)
   val strGenAl = for {
-    firstName <- Gen.alphaStr
-    lastName <- Gen.alphaStr
-    email <- Gen.alphaStr
+    firstName   <- Gen.alphaStr
+    lastName    <- Gen.alphaStr
+    email       <- Gen.alphaStr
     emailDomain <- Gen.oneOf("callhandling.co.uk", "gmail.com")
   } yield s"$firstName,$lastName,$email@$emailDomain"
 
@@ -115,7 +117,8 @@ object ScalaCheckApp extends App {
 
   case class Person(name: String, age: Int, user: Option[User])
 
-  implicit def arbOption: Arbitrary[Option[User]] = Arbitrary(Gen.option(Gen.resultOf(User)))
+  implicit def arbOption: Arbitrary[Option[User]] =
+    Arbitrary(Gen.option(Gen.resultOf(User)))
 
   val people = Gen.resultOf(Person) // case class trick - generate random instances if there are implicit generators for the constructor parameters:
   val p = forAll(people) { p =>
@@ -129,6 +132,5 @@ object ScalaCheckApp extends App {
   val people1 = Gen.resultOf(Person.apply _) //When you have companion object
    */
   println("People" + people.sample)
-
 
 }

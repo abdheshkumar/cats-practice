@@ -1,7 +1,6 @@
-
 /**
-  * Created by abdhesh on 29/04/17.
-  */
+ * Created by abdhesh on 29/04/17.
+ */
 object TypeClasses extends App {
 
   trait Combiner[A] {
@@ -39,7 +38,8 @@ object TypeClasses extends App {
   //genericSum2(List("foo", "bar", "baz"))
 
   implicit class CombinerSyntax[A](as: List[A])(implicit c: Combiner[A]) {
-    def gsum: A = genericSum2(as) // c will be passed along because it's implicit here
+    def gsum: A =
+      genericSum2(as) // c will be passed along because it's implicit here
   }
 
   implicit class CombinerSyntax2[A: Combiner](as: List[A]) {
@@ -63,7 +63,10 @@ object TypeClasses extends App {
   1 |+| 2
   true |+| true |+| false
 
-  implicit def PairCombiner[A, B](implicit ca: Combiner[A], cb: Combiner[B]): Combiner[(A, B)] =
+  implicit def PairCombiner[A, B](
+                      implicit ca: Combiner[A],
+                      cb: Combiner[B]
+  ): Combiner[(A, B)] =
     new Combiner[(A, B)] {
       def combine(a: (A, B), b: (A, B)): (A, B) = (a._1 |+| b._1, a._2 |+| b._2)
 

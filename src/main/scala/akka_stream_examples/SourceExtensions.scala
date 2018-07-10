@@ -8,7 +8,8 @@ import scala.concurrent.duration.FiniteDuration
 object SourceExtensions {
 
   implicit class RichSource[Out, Mat](val source: Source[Out, Mat]) extends AnyVal {
-    def throttle(duration: FiniteDuration) = source.zip(Sources.ticks(duration)).map(_._1)
+    def throttle(duration: FiniteDuration) =
+      source.zip(Sources.ticks(duration)).map(_._1)
 
     def hot(implicit mat: Materializer) = {
       val (actorRef, hotSource) = Connector.coupling[Out]()

@@ -6,6 +6,9 @@ object Dependencies {
   val elastic4sVersion = "6.1.3"
   val alpakkaV = "0.18"
   val AwsSdkVersion = "1.11.226"
+  val quillV = "2.5.4"
+  val protobuf =  "com.thesamet.scalapb" %% "scalapb-runtime" % "0.7.4" % "protobuf"
+
   lazy val circeLibrary = Seq(
     "io.circe" %% "circe-core",
     "io.circe" %% "circe-generic",
@@ -27,6 +30,13 @@ object Dependencies {
 
   val shapeless = Seq(
     "com.chuusai" %% "shapeless" % "2.3.3"
+  )
+  val randomData = Seq(
+    "com.danielasfregola" %% "random-data-generator" % "2.5"
+  )
+
+  val quill = Seq(
+    "io.getquill" %% "quill-cassandra" % quillV
   )
   val alpakka = Seq(
     "com.amazonaws" % "aws-java-sdk-core" % AwsSdkVersion,

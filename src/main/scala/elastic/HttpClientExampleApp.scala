@@ -9,21 +9,22 @@ object HttpClientExampleApp extends ElasticClient {
 
   client.execute {
     bulk(
-      indexInto("myindex" / "mytype").fields("country" -> "Mongolia", "capital" -> "Ulaanbaatar"),
-      indexInto("myindex" / "mytype").fields("country" -> "Namibia", "capital" -> "Windhoek")
+      indexInto("myindex" / "mytype")
+        .fields("country" -> "Mongolia", "capital" -> "Ulaanbaatar"),
+      indexInto("myindex" / "mytype")
+        .fields("country" -> "Namibia", "capital" -> "Windhoek")
     ).refresh(RefreshPolicy.WAIT_UNTIL)
   }.await
 
-  val result: Either[RequestFailure, RequestSuccess[SearchResponse]] = client.execute {
-    search("myindex").matchQuery("capital", "ulaanbaatar")
-  }.await
-  result.map{
-    out=>
-      println(out.foreach(_.hits))
+  val result: Either[RequestFailure, RequestSuccess[SearchResponse]] =
+    client.execute {
+      search("myindex").matchQuery("capital", "ulaanbaatar")
+    }.await
+  result.map { out =>
+    println(out.foreach(_.hits))
   }
 
   // prints out the original json
-
 
   client.close()
 }

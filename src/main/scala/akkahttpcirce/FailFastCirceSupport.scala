@@ -1,4 +1,3 @@
-
 package akkahttpcirce
 
 import akka.http.scaladsl.marshalling.{Marshaller, ToEntityMarshaller}
@@ -12,46 +11,47 @@ import io.circe._
 import scala.collection.immutable.Seq
 
 /**
-  * Automatic to and from JSON marshalling/unmarshalling using an in-scope circe protocol.
-  * The unmarshaller fails fast, throwing the first `Error` encountered.
-  *
-  * To use automatic codec derivation, user needs to import `io.circe.generic.auto._`.
-  */
+ * Automatic to and from JSON marshalling/unmarshalling using an in-scope circe protocol.
+ * The unmarshaller fails fast, throwing the first `Error` encountered.
+ *
+ * To use automatic codec derivation, user needs to import `io.circe.generic.auto._`.
+ */
 object FailFastCirceSupport extends FailFastCirceSupport
 
 /**
-  * Automatic to and from JSON marshalling/unmarshalling using an in-scope circe protocol.
-  * The unmarshaller fails fast, throwing the first `Error` encountered.
-  *
-  * To use automatic codec derivation import `io.circe.generic.auto._`.
-  */
+ * Automatic to and from JSON marshalling/unmarshalling using an in-scope circe protocol.
+ * The unmarshaller fails fast, throwing the first `Error` encountered.
+ *
+ * To use automatic codec derivation import `io.circe.generic.auto._`.
+ */
 trait FailFastCirceSupport extends BaseCirceSupport with FailFastUnmarshaller
 
 /**
-  * Automatic to and from JSON marshalling/unmarshalling using an in-scope circe protocol.
-  * The unmarshaller accumulates all errors in the exception `Errors`.
-  *
-  * To use automatic codec derivation, user needs to import `io.circe.generic.auto._`.
-  */
+ * Automatic to and from JSON marshalling/unmarshalling using an in-scope circe protocol.
+ * The unmarshaller accumulates all errors in the exception `Errors`.
+ *
+ * To use automatic codec derivation, user needs to import `io.circe.generic.auto._`.
+ */
 object ErrorAccumulatingCirceSupport extends ErrorAccumulatingCirceSupport {
 
   final case class DecodingFailures(failures: NonEmptyList[DecodingFailure]) extends Exception {
-    override def getMessage: String = failures.toList.map(_.toString()).mkString("\n")
+    override def getMessage: String =
+      failures.toList.map(_.toString()).mkString("\n")
   }
 
 }
 
 /**
-  * Automatic to and from JSON marshalling/unmarshalling using an in-scope circe protocol.
-  * The unmarshaller accumulates all errors in the exception `Errors`.
-  *
-  * To use automatic codec derivation import `io.circe.generic.auto._`.
-  */
+ * Automatic to and from JSON marshalling/unmarshalling using an in-scope circe protocol.
+ * The unmarshaller accumulates all errors in the exception `Errors`.
+ *
+ * To use automatic codec derivation import `io.circe.generic.auto._`.
+ */
 trait ErrorAccumulatingCirceSupport extends BaseCirceSupport with ErrorAccumulatingUnmarshaller
 
 /**
-  * Automatic to and from JSON marshalling/unmarshalling using an in-scope circe protocol.
-  */
+ * Automatic to and from JSON marshalling/unmarshalling using an in-scope circe protocol.
+ */
 trait BaseCirceSupport {
 
   def unmarshallerContentTypes: Seq[ContentTypeRange] =
@@ -61,13 +61,13 @@ trait BaseCirceSupport {
     List(`application/json`)
 
   /**
-    * `Json` => HTTP entity
-    *
-    * @return marshaller for JSON value
-    */
+   * `Json` => HTTP entity
+   *
+   * @return marshaller for JSON value
+   */
   implicit final def jsonMarshaller(
-                                     implicit printer: Printer = Printer.noSpaces
-                                   ): ToEntityMarshaller[Json] =
+                      implicit printer: Printer = Printer.noSpaces
+  ): ToEntityMarshaller[Json] =
     Marshaller.oneOf(mediaTypes: _*) { mediaType =>
       Marshaller.withFixedContentType(ContentType(mediaType)) { json =>
         HttpEntity(mediaType, printer.pretty(json))
@@ -75,41 +75,42 @@ trait BaseCirceSupport {
     }
 
   /**
-    * `A` => HTTP entity
-    *
-    * @tparam A type to encode
-    * @return marshaller for any `A` value
-    */
+   * `A` => HTTP entity
+   *
+   * @tparam A type to encode
+   * @return marshaller for any `A` value
+   */
   implicit final def marshaller[A: Encoder](
-                                             implicit printer: Printer = Printer.noSpaces
-                                           ): ToEntityMarshaller[A] =
+                      implicit printer: Printer = Printer.noSpaces
+  ): ToEntityMarshaller[A] =
     jsonMarshaller(printer).compose(Encoder[A].apply)
 
   /**
-    * HTTP entity => `Json`
-    *
-    * @return unmarshaller for `Json`
-    */
+   * HTTP entity => `Json`
+   *
+   * @return unmarshaller for `Json`
+   */
   implicit final val jsonUnmarshaller: FromEntityUnmarshaller[Json] =
     Unmarshaller.byteStringUnmarshaller
       .forContentTypes(unmarshallerContentTypes: _*)
       .map {
         case ByteString.empty => throw Unmarshaller.NoContentException
-        case data => jawn.parseByteBuffer(data.asByteBuffer).fold(throw _, identity)
+        case data =>
+          jawn.parseByteBuffer(data.asByteBuffer).fold(throw _, identity)
       }
 
   /**
-    * HTTP entity => `A`
-    *
-    * @tparam A type to decode
-    * @return unmarshaller for `A`
-    */
+   * HTTP entity => `A`
+   *
+   * @tparam A type to decode
+   * @return unmarshaller for `A`
+   */
   implicit def unmarshaller[A: Decoder]: FromEntityUnmarshaller[A]
 }
 
 /**
-  * Mix-in this trait to fail on the first error during unmarshalling.
-  */
+ * Mix-in this trait to fail on the first error during unmarshalling.
+ */
 trait FailFastUnmarshaller {
   this: BaseCirceSupport =>
 
@@ -121,8 +122,8 @@ trait FailFastUnmarshaller {
 }
 
 /**
-  * Mix-in this trait to accumulate all errors during unmarshalling.
-  */
+ * Mix-in this trait to accumulate all errors during unmarshalling.
+ */
 trait ErrorAccumulatingUnmarshaller {
   this: BaseCirceSupport =>
 
@@ -130,7 +131,10 @@ trait ErrorAccumulatingUnmarshaller {
     def decode(json: Json) =
       Decoder[A]
         .accumulating(json.hcursor)
-        .fold(failures => throw ErrorAccumulatingCirceSupport.DecodingFailures(failures), identity)
+        .fold(
+          failures => throw ErrorAccumulatingCirceSupport.DecodingFailures(failures),
+          identity
+        )
 
     jsonUnmarshaller.map(decode)
   }

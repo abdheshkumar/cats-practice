@@ -25,7 +25,9 @@ trait Applicative[F[_]] extends Functor[F] {
     ap(fa)(map2(fb, fc)((b, c) => f(_, b, c)))
 
   //Use divide and conquer approach
-  def map4[A, B, C, D, Z](fa: F[A], fb: F[B], fc: F[C], fd: F[D])(f: (A, B, C, D) => Z): F[Z] = {
+  def map4[A, B, C, D, Z](fa: F[A], fb: F[B], fc: F[C], fd: F[D])(
+                      f: (A, B, C, D) => Z
+  ): F[Z] = {
     val t1 = tuple2(fa, fb)
     val t2 = tuple2(fc, fd)
     map2(t1, t2) { case ((a, b), (c, d)) => f(a, b, c, d) }
@@ -34,7 +36,9 @@ trait Applicative[F[_]] extends Functor[F] {
   def flip[A, B](fab: F[A => B]): F[A] => F[B] =
     fa => ap(fa)(fab)
 
-  def compose[G[_]](implicit G: Applicative[G]): Applicative[Lambda[X => F[G[X]]]] = new Applicative[Lambda[X => F[G[X]]]] {
+  def compose[G[_]](
+                      implicit G: Applicative[G]
+  ): Applicative[Lambda[X => F[G[X]]]] = new Applicative[Lambda[X => F[G[X]]]] {
     def pure[A](a: A): F[G[A]] = self.pure(G.pure(a))
 
     def ap[A, B](fga: F[G[A]])(ff: F[G[A => B]]): F[G[B]] = {
@@ -42,10 +46,10 @@ trait Applicative[F[_]] extends Functor[F] {
       self.ap(fga)(x)
     }
 
-
   }
 }
 
 object Applicative {
-  def apply[F[_]](implicit applicative: Applicative[F]): Applicative[F] = applicative
+  def apply[F[_]](implicit applicative: Applicative[F]): Applicative[F] =
+    applicative
 }

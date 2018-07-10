@@ -1,13 +1,13 @@
 package handlers
 
-
 import scala.concurrent.Future
 
 object Handlers {
   implicit val validationHandler = new algebra.Validation.Handler[Future] {
-    override def minSize(s: String, n: Int): Future[Boolean] = Future.successful {
-      s.size >= n
-    }
+    override def minSize(s: String, n: Int): Future[Boolean] =
+      Future.successful {
+        s.size >= n
+      }
 
     override def hasNumber(s: String): Future[Boolean] = Future.successful {
       s.exists(c => "0123456789".contains(c))

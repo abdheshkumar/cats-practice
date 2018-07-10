@@ -24,7 +24,10 @@ object PairApp extends App {
     final case class Pair[A, B](first: A, second: B)
 
     object Pair {
-      implicit def tuple2Instance[A, B](implicit A: Monoid[A], B: Monoid[B]): Monoid[Pair[A, B]] =
+      implicit def tuple2Instance[A, B](
+                          implicit A: Monoid[A],
+                          B: Monoid[B]
+      ): Monoid[Pair[A, B]] =
         new Monoid[Pair[A, B]] {
           def empty: Pair[A, B] = Pair(A.empty, B.empty)
 
@@ -35,7 +38,8 @@ object PairApp extends App {
 
   }
 
-  def combineAll[A](list: List[A])(implicit A: Monoid[A]): A = list.foldRight(A.empty)(A.combine)
+  def combineAll[A](list: List[A])(implicit A: Monoid[A]): A =
+    list.foldRight(A.empty)(A.combine)
 
   import Demo.{Pair => Paired}
 

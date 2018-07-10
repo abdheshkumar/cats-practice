@@ -5,7 +5,7 @@ object BiFunctorApp extends App {
   import BifunctorW._
 
   val x: Either[Int, String] = Left(7)
-  val y = ("hello", 42)
+  val y                      = ("hello", 42)
 
   val f = (n: Int) => n + 1
   val g = (s: String) => s.reverse
@@ -31,7 +31,7 @@ object Bifunctor {
   implicit def EitherBifunctor = new Bifunctor[Either] {
     def bimap[A, B, C, D](fa: Either[A, B], f: A => C, g: B => D) =
       fa match {
-        case Left(a) => Left(f(a))
+        case Left(a)  => Left(f(a))
         case Right(b) => Right(g(b))
       }
   }
@@ -51,17 +51,21 @@ trait BifunctorW[F[+ _, + _], A, B] {
 object BifunctorW {
 
   def bifunctor[F[+ _, + _]] = new BifunctorApply[F] {
-    def apply[A, B](v: F[A, B])(implicit b: Bifunctor[F]) = new BifunctorW[F, A, B] {
-      val value = v
-      val bifunctor = b
-    }
+    def apply[A, B](v: F[A, B])(implicit b: Bifunctor[F]) =
+      new BifunctorW[F, A, B] {
+        val value     = v
+        val bifunctor = b
+      }
   }
 
   trait BifunctorApply[F[+ _, + _]] {
     def apply[A, B](v: F[A, B])(implicit b: Bifunctor[F]): BifunctorW[F, A, B]
   }
 
-  implicit def Tuple2Bifunctor[A, B](v: (A, B)): BifunctorW[Tuple2, A, B] = bifunctor[Tuple2](v)
+  implicit def Tuple2Bifunctor[A, B](v: (A, B)): BifunctorW[Tuple2, A, B] =
+    bifunctor[Tuple2](v)
 
-  implicit def Either2Bifunctor[A, B](v: Either[A, B]): BifunctorW[Either, A, B] = bifunctor[Either](v)
+  implicit def Either2Bifunctor[A, B](
+                      v: Either[A, B]
+  ): BifunctorW[Either, A, B] = bifunctor[Either](v)
 }

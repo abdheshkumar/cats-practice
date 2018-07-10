@@ -17,11 +17,11 @@ object MergingMaps extends App {
 
   val xm1 = Map('a' -> 1, 'b' -> 2)
   val xm2 = Map('b' -> 3, 'c' -> 4)
-  val x = mergeMap(xm1, xm2)
+  val x   = mergeMap(xm1, xm2)
   println(x)
   val ym1 = Map(1 -> List("hello"))
   val ym2 = Map(2 -> List("cats"), 1 -> List("world"))
-  val y = mergeMap(ym1, ym2)
+  val y   = mergeMap(ym1, ym2)
   println(y)
   val z = Semigroup[Map[Char, Int]].combine(xm1, xm2)
   println(z)
