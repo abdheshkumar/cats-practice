@@ -55,6 +55,7 @@ object Dependencies {
   val elastic4s = Seq(
     "com.sksamuel.elastic4s" %% "elastic4s-core" % elastic4sVersion,
     "com.sksamuel.elastic4s" %% "elastic4s-http" % elastic4sVersion,
+    "com.sksamuel.elastic4s" %% "elastic4s-jackson" % elastic4sVersion,
     "com.sksamuel.elastic4s" %% "elastic4s-testkit" % elastic4sVersion % "test",
     "com.sksamuel.elastic4s" %% "elastic4s-embedded" % elastic4sVersion % "test"
   )

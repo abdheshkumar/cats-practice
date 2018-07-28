@@ -19,7 +19,7 @@ lazy val root = project.in(file("."))
     scalafmtTestOnCompile in ThisBuild := true,
     ignoreErrors in (ThisBuild, scalafmt) := false,
     */
-    scalacOptions ++= ScalaC.options,
+    //scalacOptions ++= ScalaC.options,
     libraryDependencies ++= circeLibrary ++ `akka-http` ++ freestyle ++ scalaTest ++
       `cats-effect` ++ cats ++ elastic4s ++ jose4j ++ alpakka ++ kantanCsv ++ shapeless ++ randomData ++ quill,
     addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.4"),
