@@ -1,7 +1,7 @@
 import sbt._
 
 object Dependencies {
-  lazy val circeVersion = "0.9.0"
+  lazy val circeVersion = "0.9.3"
   lazy val freesV = "0.6.3"
   val elastic4sVersion = "6.1.3"
   val alpakkaV = "0.18"
@@ -59,6 +59,6 @@ object Dependencies {
     "com.sksamuel.elastic4s" %% "elastic4s-testkit" % elastic4sVersion % "test",
     "com.sksamuel.elastic4s" %% "elastic4s-embedded" % elastic4sVersion % "test"
   )
-  val cats = Seq("org.typelevel" %% "cats-core" % "1.0.1" withSources())
+  val cats = Seq("org.typelevel" %% "cats-core" % "1.2.0" withSources())
   val `cats-effect` = Seq("org.typelevel" %% "cats-effect" % "1.0.0-RC")
 }
