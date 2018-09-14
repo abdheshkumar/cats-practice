@@ -1,0 +1,5 @@
+package error
+
+object ErrorApp {
+
+}

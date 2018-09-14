@@ -1,0 +1,5 @@
+package functor
+
+object MonadErrorApp {
+
+}
