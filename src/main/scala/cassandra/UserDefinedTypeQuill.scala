@@ -6,7 +6,6 @@ import io.getquill.{CassandraMirrorContext, SnakeCase}
 
 object UserDefinedTypeQuill extends App {
 
-
   val ctx = new CassandraMirrorContext(SnakeCase)
 
   import ctx._

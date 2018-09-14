@@ -3,10 +3,15 @@ import sbt._
 object Dependencies {
   lazy val circeVersion = "0.9.3"
   lazy val freesV = "0.6.3"
-  val elastic4sVersion = "6.1.3"
+  val elastic4sVersion = "6.3.4"
+  val http4sVersion = "0.19.0-M2"
   val alpakkaV = "0.18"
+  val meowMtl = "0.1.2"
   val AwsSdkVersion = "1.11.226"
   val quillV = "2.5.4"
+  private val catsVersion = "1.3.1"
+  private val catsEffectVersion = "1.0.0"
+
   val protobuf =  "com.thesamet.scalapb" %% "scalapb-runtime" % "0.7.4" % "protobuf"
 
   lazy val circeLibrary = Seq(
@@ -15,6 +20,7 @@ object Dependencies {
     "io.circe" %% "circe-parser",
     "io.circe" %% "circe-generic-extras"
   ).map(_ % circeVersion)
+
   lazy val `akka-http` = Seq(
     "com.typesafe.akka" %% "akka-http" % "10.0.11",
     "com.typesafe.akka" %% "akka-http-testkit" % "10.0.11" % Test
@@ -38,6 +44,13 @@ object Dependencies {
   val quill = Seq(
     "io.getquill" %% "quill-cassandra" % quillV
   )
+  val `meow-mtl` = Seq( "com.olegpy" %% "meow-mtl" % meowMtl)
+  val http4s = Seq(
+    "org.http4s" %% "http4s-dsl" % http4sVersion,
+    "org.http4s" %% "http4s-blaze-server" % http4sVersion,
+    "org.http4s" %% "http4s-blaze-client" % http4sVersion,
+    "org.http4s" %% "http4s-circe" % http4sVersion
+  )
   val alpakka = Seq(
     "com.amazonaws" % "aws-java-sdk-core" % AwsSdkVersion,
     "com.lightbend.akka" %% "akka-stream-alpakka-s3" % alpakkaV,
@@ -59,6 +72,7 @@ object Dependencies {
     "com.sksamuel.elastic4s" %% "elastic4s-testkit" % elastic4sVersion % "test",
     "com.sksamuel.elastic4s" %% "elastic4s-embedded" % elastic4sVersion % "test"
   )
-  val cats = Seq("org.typelevel" %% "cats-core" % "1.2.0" withSources())
-  val `cats-effect` = Seq("org.typelevel" %% "cats-effect" % "1.0.0-RC")
+
+  val cats = Seq("org.typelevel" %% "cats-core" % catsVersion withSources())
+  val `cats-effect` = Seq("org.typelevel" %% "cats-effect" % catsEffectVersion)
 }

@@ -1,3 +1,4 @@
+/*
 package elastic
 
 import com.sksamuel.elastic4s.ElasticsearchClientUri
@@ -15,7 +16,7 @@ trait ElasticClient extends App {
     provider.setCredentials(AuthScope.ANY, credentials)
     provider
   }
-  val client = HttpClient(
+  val client = ElasticsearchJavaRestClient(
     ElasticsearchClientUri("localhost", 9200),
     (requestConfigBuilder: RequestConfig.Builder) => requestConfigBuilder,
     new HttpClientConfigCallback {
@@ -26,3 +27,4 @@ trait ElasticClient extends App {
     }
   )
 }
+ */

@@ -1,3 +1,4 @@
+/*
 package elastic
 import com.sksamuel.elastic4s.RefreshPolicy
 import com.sksamuel.elastic4s.http.search.SearchResponse
@@ -28,3 +29,4 @@ object HttpClientExampleApp extends ElasticClient {
 
   client.close()
 }
+ */

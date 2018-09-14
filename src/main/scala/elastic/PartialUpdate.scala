@@ -42,12 +42,15 @@ object PartialUpdate extends App {
     """.stripMargin
   }
 
-  implicit val system = ActorSystem("elastic")
+  implicit val system       = ActorSystem("elastic")
   implicit val materializer = ActorMaterializer()
   // needed for the future flatMap/onComplete in the end
   implicit val executionContext = system.dispatcher
   println(addTagRequestBody(">_429/5e1cb1ab0c0c49ed95c3b72117c96c93"))
-  val entity = HttpEntity(ContentTypes.`application/json`, addTagRequestBody(">_429/5e1cb1ab0c0c49ed95c3b72117c96c93"))
+  val entity = HttpEntity(
+    ContentTypes.`application/json`,
+    addTagRequestBody(">_429/5e1cb1ab0c0c49ed95c3b72117c96c93")
+  )
   val req = RequestBuilding.Post(requestUrl("8"), entity)
 
   val responseFuture: Future[HttpResponse] = Http().singleRequest(req)
@@ -55,7 +58,7 @@ object PartialUpdate extends App {
   responseFuture
     .onComplete {
       case Success(res) => println(res)
-      case Failure(_) => sys.error("something wrong")
+      case Failure(_)   => sys.error("something wrong")
     }
 
 }

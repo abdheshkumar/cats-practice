@@ -11,7 +11,7 @@ lazy val root = project.in(file("."))
     name := "cats-practice",
     version := "1.0",
     scalaVersion := "2.12.6",
-    scalacOptions += "-Ypartial-unification",
+    scalacOptions ++= Seq("-Ypartial-unification", "-Ybackend-parallelism", "8"),
     scalafmtOnCompile := true,
     /*
     scalafmtVersion in ThisBuild := "1.4.0",
@@ -21,7 +21,8 @@ lazy val root = project.in(file("."))
     */
     //scalacOptions ++= ScalaC.options,
     libraryDependencies ++= circeLibrary ++ `akka-http` ++ freestyle ++ scalaTest ++
-      `cats-effect` ++ cats ++ elastic4s ++ jose4j ++ alpakka ++ kantanCsv ++ shapeless ++ randomData ++ quill,
+      `cats-effect` ++ cats ++ elastic4s ++ jose4j ++ alpakka ++ kantanCsv ++ shapeless ++ randomData ++ quill ++
+      http4s ++ `meow-mtl`,
     addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.4"),
     addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full))
   .settings(macroAnnotationSettings)

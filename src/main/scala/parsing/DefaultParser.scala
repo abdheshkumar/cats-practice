@@ -12,7 +12,7 @@ object DefaultParser extends App {
 
   implicit val withDefaultsConfig: Configuration = Configuration.default.withDefaults
 
-  val rawJson = """{ "thisIsAField": "hehe", "b": 2.3 }"""
+  val rawJson    = """{ "thisIsAField": "hehe", "b": 2.3 }"""
   val json: Json = parse(rawJson).right.get
   println(decode[ConfigExampleFoo](rawJson))
 
