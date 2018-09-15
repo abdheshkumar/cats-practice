@@ -1,4 +1,3 @@
-import org.apache.ivy.core.module.descriptor.ExcludeRule
 import sbt._
 
 object Dependencies {
@@ -20,8 +19,8 @@ object Dependencies {
     "io.circe" %% "circe-generic",
     "io.circe" %% "circe-parser",
     "io.circe" %% "circe-generic-extras",
-    "io.circe" %% "circe-literal"/*,
-    "io.circe" %% "circe-jawn"*/
+    "io.circe" %% "circe-literal",
+    "io.circe" %% "circe-jawn"
   ).map(_ % circeVersion)
 
   lazy val `akka-http` = Seq(
@@ -54,9 +53,9 @@ object Dependencies {
     "org.http4s" %% "http4s-dsl" % http4sVersion,
     "org.http4s" %% "http4s-blaze-server" % http4sVersion,
     "org.http4s" %% "http4s-blaze-client" % http4sVersion,
-    "org.http4s" %% "http4s-circe" % http4sVersion  excludeAll(
-      ExclusionRule(organization = "io.circe")
-    ))
+    "org.http4s" %% "http4s-circe" % http4sVersion excludeAll(
+      ExclusionRule(organization = "io.circe"),
+      ExclusionRule(organization = "org.spire-math")))
 
   val pureconfig = Seq(
     "com.github.pureconfig" %% "pureconfig" % "0.9.2"

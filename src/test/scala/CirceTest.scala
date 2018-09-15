@@ -22,7 +22,8 @@ object localExamples {
       b            <- arbitrary[Double]
     } yield ConfigExampleFoo(thisIsAField, a, b)
     implicit val arbitraryConfigExampleFoo: Arbitrary[ConfigExampleFoo] = Arbitrary(
-      genConfigExampleFoo)
+      genConfigExampleFoo
+    )
   }
 
   object ConfigExampleBase {
@@ -30,7 +31,8 @@ object localExamples {
     val genConfigExampleBase: Gen[ConfigExampleBase] =
       Gen.oneOf(Gen.const(ConfigExampleBar), ConfigExampleFoo.genConfigExampleFoo)
     implicit val arbitraryConfigExampleBase: Arbitrary[ConfigExampleBase] = Arbitrary(
-      genConfigExampleBase)
+      genConfigExampleBase
+    )
   }
   val genConfiguration: Gen[Configuration] = for {
     transformMemberNames      <- arbitrary[String => String]
@@ -39,14 +41,13 @@ object localExamples {
     discriminator             <- arbitrary[Option[String]]
   } yield Configuration(transformMemberNames, transformConstructorNames, useDefaults, discriminator)
 
-
-
 }
 
 class ConfiguredAutoDerivedSuite extends FlatSpec with GeneratorDrivenPropertyChecks {
   import localExamples._
   implicit val arbitraryConfiguration: Arbitrary[Configuration] = Arbitrary(genConfiguration)
-  "Configuration#transformMemberNames" should "support member name transformation using snake_case" in forAll { foo: ConfigExampleFoo =>
+  "Configuration#transformMemberNames" should "support member name transformation using snake_case" in forAll {
+    foo: ConfigExampleFoo =>
       implicit val snakeCaseConfig: Configuration = Configuration.default.withSnakeCaseMemberNames
 
       import foo._
