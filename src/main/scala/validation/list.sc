@@ -5,9 +5,10 @@ import cats.implicits._
 case class User(id: String)
 
 val users = List(User("1"), User("1"), User("1"), User("2"))
-users.foldMap(u => Map(u.id -> {
+val r = users.foldMap(u => Map(u.id -> {
   NonEmptyList(u, Nil)
 }))
+println(r)
 
 def validateUserByIndex(u: User, index: Int) = {
   Either.cond(u.id.nonEmpty, u, "invalid").toValidated.toValidatedNel
@@ -62,3 +63,5 @@ users.zipWithIndex.foldLeft(List.empty[User].validNel[String]) {
 
 
 validateV(User("")).withEither(f => f.flatMap(a => validateV1(a).toEither))
+val m = Map(1->List("a"), 2-> List("a","b"))
+

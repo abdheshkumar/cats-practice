@@ -9,7 +9,7 @@ import scala.concurrent.duration._
 import scala.concurrent.Await
 
 object CsvAkkaStream extends App {
-  implicit val system = ActorSystem("csv")
+  implicit val system = ActorSystem("src/main/csv/main/csv")
   implicit val ac     = ActorMaterializer()
   val flow: Flow[Seq[String], Map[String, String], NotUsed] = Flow[Seq[String]]
     .prefixAndTail(1)

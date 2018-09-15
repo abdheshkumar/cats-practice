@@ -17,7 +17,7 @@ object FunctorApp extends App {
 
   val result: Either[String, String] = "Hello".asRight[String]
   val out: Either[String, String]    = result.bimap(_.toLowerCase, _.toUpperCase())
-
+  ("1", "2").bimap(_.toLowerCase, _.toUpperCase())
   case class Money(amount: Int)
 
   case class Salary(size: Money)

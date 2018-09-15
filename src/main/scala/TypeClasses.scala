@@ -60,7 +60,7 @@ object TypeClasses extends App {
     def |+|(b: A): A = c.combine(a, b)
   }
 
-  1 |+| 2
+  1.|+|(2)
   true |+| true |+| false
 
   implicit def PairCombiner[A, B](

@@ -9,10 +9,12 @@ import scala.util.control.Exception._
 object ApplicativeApp extends App {
   val m: Map[Int, String] = Map(1 -> "Hi", 2 -> "There", 3 -> "you")
 
-  m.fmap(_ ++ "!")
+  val r0: Map[Int, String] = m.fmap(_ ++ "!")
+  println(r0)
 
   val fa = Option(2)
-  fa.foldLeft(Option(2))((b, n) => b.map(_ + n))
+  val r1 = fa.foldLeft(Option(2))((b, n) => b.map(_ + n))
+  println(r1)
 
   def parseInt(s: String): Option[Int] = allCatch.opt(s.toInt)
 
