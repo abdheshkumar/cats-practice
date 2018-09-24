@@ -10,6 +10,6 @@ object functor {
     }
   }
   implicit val functorForList = new Functor[List] {
-    override def map[A, B](fa: List[A])(f: A => B) = fa.map(f)
+    override def map[A, B](fa: List[A])(f: A => B): List[B] = fa.map(f)
   }
 }

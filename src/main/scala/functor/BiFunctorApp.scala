@@ -23,13 +23,13 @@ trait Bifunctor[F[+ _, + _]] {
 }
 
 object Bifunctor {
-  implicit def Tuple2Bifunctor = new Bifunctor[Tuple2] {
-    def bimap[A, B, C, D](fa: (A, B), f: A => C, g: B => D) =
+  implicit def Tuple2Bifunctor: Bifunctor[Tuple2] = new Bifunctor[Tuple2] {
+    def bimap[A, B, C, D](fa: (A, B), f: A => C, g: B => D): (C, D) =
       (f(fa._1), g(fa._2))
   }
 
-  implicit def EitherBifunctor = new Bifunctor[Either] {
-    def bimap[A, B, C, D](fa: Either[A, B], f: A => C, g: B => D) =
+  implicit def EitherBifunctor: Bifunctor[Either] = new Bifunctor[Either] {
+    def bimap[A, B, C, D](fa: Either[A, B], f: A => C, g: B => D): Either[C, D] =
       fa match {
         case Left(a)  => Left(f(a))
         case Right(b) => Right(g(b))
@@ -41,17 +41,17 @@ trait BifunctorW[F[+ _, + _], A, B] {
   val value: F[A, B]
   val bifunctor: Bifunctor[F]
 
-  def <-:->[C, D](f: A => C, g: B => D) = bifunctor.bimap(value, f, g)
+  def <-:->[C, D](f: A => C, g: B => D): F[C, D] = bifunctor.bimap(value, f, g)
 
-  def <-:[C](f: A => C) = bifunctor.bimap(value, f, identity[B])
+  def <-:[C](f: A => C): F[C, B] = bifunctor.bimap(value, f, identity[B])
 
-  def :->[D](g: B => D) = bifunctor.bimap(value, identity[A], g)
+  def :->[D](g: B => D): F[A, D] = bifunctor.bimap(value, identity[A], g)
 }
 
 object BifunctorW {
 
-  def bifunctor[F[+ _, + _]] = new BifunctorApply[F] {
-    def apply[A, B](v: F[A, B])(implicit b: Bifunctor[F]) =
+  def bifunctor[F[+ _, + _]]: BifunctorApply[F] = new BifunctorApply[F] {
+    def apply[A, B](v: F[A, B])(implicit b: Bifunctor[F]): BifunctorW[F, A, B] =
       new BifunctorW[F, A, B] {
         val value     = v
         val bifunctor = b

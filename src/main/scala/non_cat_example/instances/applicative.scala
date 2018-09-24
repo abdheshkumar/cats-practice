@@ -4,7 +4,7 @@ import non_cat_example.Applicative
 
 object applicative {
   implicit val applicativeForOption = new Applicative[Option] {
-    override def ap[A, B](fa: Option[A])(ff: Option[A => B]) =
+    override def ap[A, B](fa: Option[A])(ff: Option[A => B]): Option[B] =
       for {
         f <- ff
         a <- fa

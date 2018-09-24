@@ -45,7 +45,7 @@ case class FileUploadRoute()(
 ) extends Route {
   override def apply(v1: RequestContext): Future[RouteResult] = route(v1)
 
-  private val route: Route = fileUpload("csv") {
+  private val route: Route = fileUpload("src/main/csv/main/csv") {
     case (meta, byteSource) =>
       onSuccess(uploader(meta, byteSource)) { sum =>
         complete(s"Sum: $sum")
@@ -86,7 +86,7 @@ object HttpServer extends App with AkkaApp {
             fields("name")
               .runFold(ByteString.empty)((seed, inc) => seed ++ inc)
               .flatMap(uuid => {
-                fields("csv")
+                fields("src/main/csv/main/csv")
                   .via(Framing.delimiter(ByteString("\n"), 1024))
                   .runForeach { f =>
                     println("ss");

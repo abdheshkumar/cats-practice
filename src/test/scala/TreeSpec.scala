@@ -11,8 +11,8 @@ class TreeSpec extends CatsSuite {
 
     def genNode[A: Arbitrary]: Gen[Branch[A]] =
       for {
-        left  <- Gen.lzy(genTree[A])
-        right <- Gen.lzy(genTree[A])
+        left  <- genTree[A]
+        right <- genTree[A]
       } yield Branch(left, right)
 
     def genTree[A: Arbitrary]: Gen[Tree[A]] = Gen.oneOf(Gen.lzy(genLeaf[A]), Gen.lzy(genNode[A]))

@@ -9,7 +9,7 @@ val alo = Applicative[Option]
   .compose[Option]
   .compose[List]
 
-val p = alo.pure(12)
+val p: Option[List[Option[List[Int]]]] = alo.pure(12)
 
 alo.map(Some(List(None: Option[List[Int]])))(f => f + 2)
 

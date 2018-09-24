@@ -42,7 +42,7 @@ object PartialUpdate extends App {
     """.stripMargin
   }
 
-  implicit val system       = ActorSystem("elastic")
+  implicit val system       = ActorSystem("src/main/elasticn/elastic")
   implicit val materializer = ActorMaterializer()
   // needed for the future flatMap/onComplete in the end
   implicit val executionContext = system.dispatcher

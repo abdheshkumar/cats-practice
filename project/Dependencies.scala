@@ -18,13 +18,16 @@ object Dependencies {
     "io.circe" %% "circe-core",
     "io.circe" %% "circe-generic",
     "io.circe" %% "circe-parser",
-    "io.circe" %% "circe-generic-extras"
+    "io.circe" %% "circe-generic-extras",
+    "io.circe" %% "circe-literal",
+    "io.circe" %% "circe-jawn"
   ).map(_ % circeVersion)
 
   lazy val `akka-http` = Seq(
     "com.typesafe.akka" %% "akka-http"         % "10.0.11",
     "com.typesafe.akka" %% "akka-http-testkit" % "10.0.11" % Test
   )
+
   lazy val scalaTest = Seq(
     "org.scalatest"  %% "scalatest"  % "3.0.4"  % Test,
     "org.scalacheck" %% "scalacheck" % "1.13.5" % Test
@@ -48,7 +51,12 @@ object Dependencies {
     "org.http4s" %% "http4s-dsl"          % http4sVersion,
     "org.http4s" %% "http4s-blaze-server" % http4sVersion,
     "org.http4s" %% "http4s-blaze-client" % http4sVersion,
-    "org.http4s" %% "http4s-circe"        % http4sVersion
+    "org.http4s" %% "http4s-circe" % http4sVersion excludeAll(
+      ExclusionRule(organization = "io.circe"),
+      ExclusionRule(organization = "org.spire-math")))
+
+  val pureconfig = Seq(
+    "com.github.pureconfig" %% "pureconfig" % "0.9.2"
   )
   val alpakka = Seq(
     "com.amazonaws"      % "aws-java-sdk-core"         % AwsSdkVersion,
