@@ -1,18 +1,18 @@
 import sbt._
 
 object Dependencies {
-  lazy val circeVersion = "0.9.3"
-  lazy val freesV = "0.6.3"
-  val elastic4sVersion = "6.3.4"
-  val http4sVersion = "0.19.0-M2"
-  val alpakkaV = "0.18"
-  val meowMtl = "0.1.2"
-  val AwsSdkVersion = "1.11.226"
-  val quillV = "2.5.4"
-  private val catsVersion = "1.3.1"
+  lazy val circeVersion         = "0.9.3"
+  lazy val freesV               = "0.6.3"
+  val elastic4sVersion          = "6.3.4"
+  val http4sVersion             = "0.19.0-M2"
+  val alpakkaV                  = "0.18"
+  val meowMtl                   = "0.1.2"
+  val AwsSdkVersion             = "1.11.226"
+  val quillV                    = "2.5.4"
+  private val catsVersion       = "1.3.1"
   private val catsEffectVersion = "1.0.0"
 
-  val protobuf =  "com.thesamet.scalapb" %% "scalapb-runtime" % "0.7.4" % "protobuf"
+  val protobuf = "com.thesamet.scalapb" %% "scalapb-runtime" % "0.7.4" % "protobuf"
 
   lazy val circeLibrary = Seq(
     "io.circe" %% "circe-core",
@@ -22,17 +22,16 @@ object Dependencies {
   ).map(_ % circeVersion)
 
   lazy val `akka-http` = Seq(
-    "com.typesafe.akka" %% "akka-http" % "10.0.11",
+    "com.typesafe.akka" %% "akka-http"         % "10.0.11",
     "com.typesafe.akka" %% "akka-http-testkit" % "10.0.11" % Test
   )
   lazy val scalaTest = Seq(
-    "org.scalatest" %% "scalatest" % "3.0.4" % Test,
+    "org.scalatest"  %% "scalatest"  % "3.0.4"  % Test,
     "org.scalacheck" %% "scalacheck" % "1.13.5" % Test
   )
 
-  val kantanCsv = Seq(
-    "com.nrinaudo" %% "kantan.csv" % "0.4.0",
-    "com.nrinaudo" %% "kantan.csv-generic" % "0.4.0")
+  val kantanCsv =
+    Seq("com.nrinaudo" %% "kantan.csv" % "0.4.0", "com.nrinaudo" %% "kantan.csv-generic" % "0.4.0")
 
   val shapeless = Seq(
     "com.chuusai" %% "shapeless" % "2.3.3"
@@ -44,35 +43,37 @@ object Dependencies {
   val quill = Seq(
     "io.getquill" %% "quill-cassandra" % quillV
   )
-  val `meow-mtl` = Seq( "com.olegpy" %% "meow-mtl" % meowMtl)
+  val `meow-mtl` = Seq("com.olegpy" %% "meow-mtl" % meowMtl)
   val http4s = Seq(
-    "org.http4s" %% "http4s-dsl" % http4sVersion,
+    "org.http4s" %% "http4s-dsl"          % http4sVersion,
     "org.http4s" %% "http4s-blaze-server" % http4sVersion,
     "org.http4s" %% "http4s-blaze-client" % http4sVersion,
-    "org.http4s" %% "http4s-circe" % http4sVersion
+    "org.http4s" %% "http4s-circe"        % http4sVersion
   )
   val alpakka = Seq(
-    "com.amazonaws" % "aws-java-sdk-core" % AwsSdkVersion,
-    "com.lightbend.akka" %% "akka-stream-alpakka-s3" % alpakkaV,
+    "com.amazonaws"      % "aws-java-sdk-core"         % AwsSdkVersion,
+    "com.lightbend.akka" %% "akka-stream-alpakka-s3"   % alpakkaV,
     "com.lightbend.akka" %% "akka-stream-alpakka-file" % alpakkaV,
-    "com.lightbend.akka" %% "akka-stream-alpakka-csv" % alpakkaV
+    "com.lightbend.akka" %% "akka-stream-alpakka-csv"  % alpakkaV
   )
   lazy val freestyle = Seq(
-    "io.frees" %% "frees-core" % freesV,
-    "io.frees" %% "frees-fetch" % freesV,
+    "io.frees" %% "frees-core"    % freesV,
+    "io.frees" %% "frees-fetch"   % freesV,
     "io.frees" %% "frees-logging" % freesV,
     "io.frees" %% "frees-effects" % freesV
   )
 
   val jose4j = Seq("org.bitbucket.b_c" % "jose4j" % "0.6.3")
   val elastic4s = Seq(
-    "com.sksamuel.elastic4s" %% "elastic4s-core" % elastic4sVersion,
-    "com.sksamuel.elastic4s" %% "elastic4s-http" % elastic4sVersion,
-    "com.sksamuel.elastic4s" %% "elastic4s-jackson" % elastic4sVersion,
-    "com.sksamuel.elastic4s" %% "elastic4s-testkit" % elastic4sVersion % "test",
+    "com.sksamuel.elastic4s" %% "elastic4s-core"     % elastic4sVersion,
+    "com.sksamuel.elastic4s" %% "elastic4s-http"     % elastic4sVersion,
+    "com.sksamuel.elastic4s" %% "elastic4s-jackson"  % elastic4sVersion,
+    "com.sksamuel.elastic4s" %% "elastic4s-testkit"  % elastic4sVersion % "test",
     "com.sksamuel.elastic4s" %% "elastic4s-embedded" % elastic4sVersion % "test"
   )
 
-  val cats = Seq("org.typelevel" %% "cats-core" % catsVersion withSources())
+  val cats = Seq(
+    "org.typelevel" %% "cats-core"    % catsVersion withSources (),
+    "org.typelevel" %% "cats-testkit" % catsVersion)
   val `cats-effect` = Seq("org.typelevel" %% "cats-effect" % catsEffectVersion)
 }

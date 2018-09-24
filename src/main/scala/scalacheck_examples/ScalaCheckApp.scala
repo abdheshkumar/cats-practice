@@ -50,25 +50,26 @@ object ScalaCheckApp extends App {
   }
   customer.check
 
-  sealed abstract class Tree
+  sealed trait Tree[A]
 
-  case class Node(left: Tree, right: Tree, v: Int) extends Tree
+  case class Node[A](left: Tree[A], right: Tree[A]) extends Tree[A]
 
-  case object Leaf extends Tree
+  case class Leaf[A](value: A) extends Tree[A]
 
   import org.scalacheck._
   import Arbitrary.arbitrary
   import Gen._
 
-  val genLeaf = const(Leaf)
+  def genLeaf[A: Arbitrary]: Gen[Leaf[A]] = arbitrary[A].map(Leaf(_))
 
-  val genNode = for {
-    v     <- arbitrary[Int]
-    left  <- genTree
-    right <- genTree
-  } yield Node(left, right, v)
+  def genNode[A: Arbitrary]: Gen[Node[A]] =
+    for {
+      //v     <- arbitrary[Int]
+      left  <- genTree[A]
+      right <- genTree[A]
+    } yield Node(left, right)
 
-  def genTree: Gen[Tree] = oneOf(genLeaf, genNode)
+  def genTree[A: Arbitrary]: Gen[Tree[A]] = oneOf(genLeaf[A], genNode[A])
 
   val genStringStream: Gen[Stream[String]] =
     Gen.containerOf[Stream, String](Gen.alphaStr)

@@ -1,6 +1,5 @@
 package http4s
 
-
 import cats.data.{Kleisli, OptionT}
 import cats.effect._
 import cats.effect.concurrent.Ref
@@ -66,10 +65,9 @@ object UserInterpreter {
         }
   }
 
-
 }
 
-class UserRoutes[F[_] : Sync](userAlgebra: UserAlgebra[F]) extends Http4sDsl[F] {
+class UserRoutes[F[_]: Sync](userAlgebra: UserAlgebra[F]) extends Http4sDsl[F] {
 
   import org.http4s.HttpRoutes
 
@@ -78,15 +76,15 @@ class UserRoutes[F[_] : Sync](userAlgebra: UserAlgebra[F]) extends Http4sDsl[F] 
     case GET -> Root / "users" / username =>
       userAlgebra.find(username).flatMap {
         case Some(user) => Ok(user.asJson)
-        case None => NotFound(username.asJson)
+        case None       => NotFound(username.asJson)
       }
 
-    case req@POST -> Root / "users" =>
+    case req @ POST -> Root / "users" =>
       req.as[User].flatMap { user =>
         userAlgebra.save(user) *> Created(user.username.asJson)
       }
 
-    case req@PUT -> Root / "users" / username =>
+    case req @ PUT -> Root / "users" / username =>
       req.as[UserUpdateAge].flatMap { userUpdate =>
         userAlgebra.updateAge(username, userUpdate.age) *> Ok(username.asJson)
       }
@@ -94,29 +92,35 @@ class UserRoutes[F[_] : Sync](userAlgebra: UserAlgebra[F]) extends Http4sDsl[F] 
 
 }
 
-class UserRoutesAlt[F[_] : Sync](userAlgebra: UserAlgebra[F]) extends Http4sDsl[F] {
+class UserRoutesAlt[F[_]: Sync](userAlgebra: UserAlgebra[F]) extends Http4sDsl[F] {
 
   val routes: HttpRoutes[F] = HttpRoutes.of[F] {
 
     case GET -> Root / "users" / username =>
       userAlgebra.find(username).flatMap {
         case Some(user) => Ok(user.asJson)
-        case None => NotFound(username.asJson)
+        case None       => NotFound(username.asJson)
       }
 
-    case req@POST -> Root / "users" =>
-      req.as[User].flatMap { user =>
-        userAlgebra.save(user) *> Created(user.username.asJson)
-      }.handleErrorWith { // compiles without giving you "match non-exhaustive" error
-        case UserAlreadyExists(username) => Conflict(username.asJson)
-      }
+    case req @ POST -> Root / "users" =>
+      req
+        .as[User]
+        .flatMap { user =>
+          userAlgebra.save(user) *> Created(user.username.asJson)
+        }
+        .handleErrorWith { // compiles without giving you "match non-exhaustive" error
+          case UserAlreadyExists(username) => Conflict(username.asJson)
+        }
 
-    case req@PUT -> Root / "users" / username =>
-      req.as[UserUpdateAge].flatMap { userUpdate =>
-        userAlgebra.updateAge(username, userUpdate.age) *> Ok(username.asJson)
-      }.handleErrorWith { // compiles without giving you "match non-exhaustive" error
-        case InvalidUserAge(age) => BadRequest(s"Invalid age $age".asJson)
-      }
+    case req @ PUT -> Root / "users" / username =>
+      req
+        .as[UserUpdateAge]
+        .flatMap { userUpdate =>
+          userAlgebra.updateAge(username, userUpdate.age) *> Ok(username.asJson)
+        }
+        .handleErrorWith { // compiles without giving you "match non-exhaustive" error
+          case InvalidUserAge(age) => BadRequest(s"Invalid age $age".asJson)
+        }
   }
 
 }
@@ -126,7 +130,9 @@ trait HttpErrorHandler[F[_], E <: Throwable] {
 }
 
 object RoutesHttpErrorHandler {
-  def apply[F[_] : ApplicativeError[?[_], E], E <: Throwable](routes: HttpRoutes[F])(handler: E => F[Response[F]]): HttpRoutes[F] =
+  def apply[F[_]: ApplicativeError[?[_], E], E <: Throwable](
+                      routes: HttpRoutes[F]
+  )(handler: E => F[Response[F]]): HttpRoutes[F] =
     Kleisli { req =>
       OptionT {
         routes.run(req).value.handleErrorWith(e => handler(e).map(Option(_)))
@@ -138,23 +144,24 @@ object HttpErrorHandler {
   def apply[F[_], E <: Throwable](implicit ev: HttpErrorHandler[F, E]): HttpErrorHandler[F, E] = ev
 }
 
-class UserRoutesMTL[F[_] : Sync](userAlgebra: UserAlgebra[F])
-                                (implicit H: HttpErrorHandler[F, UserError]) extends Http4sDsl[F] {
+class UserRoutesMTL[F[_]: Sync](userAlgebra: UserAlgebra[F])(
+                    implicit H: HttpErrorHandler[F, UserError]
+) extends Http4sDsl[F] {
 
   private val httpRoutes: HttpRoutes[F] = HttpRoutes.of[F] {
 
     case GET -> Root / "users" / username =>
       userAlgebra.find(username).flatMap {
         case Some(user) => Ok(user.asJson)
-        case None => NotFound(username.asJson)
+        case None       => NotFound(username.asJson)
       }
 
-    case req@POST -> Root / "users" =>
+    case req @ POST -> Root / "users" =>
       req.as[User].flatMap { user =>
         userAlgebra.save(user) *> Created(user.username.asJson)
       }
 
-    case req@PUT -> Root / "users" / username =>
+    case req @ PUT -> Root / "users" / username =>
       req.as[UserUpdateAge].flatMap { userUpdate =>
         userAlgebra.updateAge(username, userUpdate.age) *> Created(username.asJson)
       }
@@ -164,11 +171,13 @@ class UserRoutesMTL[F[_] : Sync](userAlgebra: UserAlgebra[F])
 
 }
 
-class UserHttpErrorHandler[F[_] : MonadError[?[_], UserError]] extends HttpErrorHandler[F, UserError] with Http4sDsl[F] {
+class UserHttpErrorHandler[F[_]: MonadError[?[_], UserError]]
+    extends HttpErrorHandler[F, UserError]
+    with Http4sDsl[F] {
   private val handler: UserError => F[Response[F]] = {
-    case InvalidUserAge(age) => BadRequest(s"Invalid age $age".asJson)
+    case InvalidUserAge(age)         => BadRequest(s"Invalid age $age".asJson)
     case UserAlreadyExists(username) => Conflict(username.asJson)
-    case UserNotFound(username) => NotFound(username.asJson)
+    case UserNotFound(username)      => NotFound(username.asJson)
   }
 
   override def handle(routes: HttpRoutes[F]): HttpRoutes[F] =
@@ -179,7 +188,7 @@ object Http2sApp extends IOApp {
 
   import com.olegpy.meow.hierarchy._
 
-  def app[F[_] : ConcurrentEffect]: fs2.Stream[F, ExitCode] = {
+  def app[F[_]: ConcurrentEffect]: fs2.Stream[F, ExitCode] = {
     implicit def userHttpErrorHandler: HttpErrorHandler[F, UserError] = new UserHttpErrorHandler[F]
 
     BlazeBuilder[F]
@@ -188,7 +197,6 @@ object Http2sApp extends IOApp {
       .serve
   }
 
-  override def run(args: List[String]): IO[ExitCode] = {
+  override def run(args: List[String]): IO[ExitCode] =
     app[IO].compile.drain.as(ExitCode.Success)
-  }
 }
