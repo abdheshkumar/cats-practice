@@ -1,11 +1,9 @@
 package scalacheck_examples
 
 import org.scalacheck.Arbitrary
-
+import org.scalacheck.Gen
+import org.scalacheck.Prop.forAll
 object ScalaCheckApp extends App {
-
-  import org.scalacheck.Gen
-  import org.scalacheck.Prop.forAll
 
   // strGen generates a fixed length random string
   val strGen = (n: Int) => Gen.listOfN(n, Gen.alphaChar).map(_.mkString)

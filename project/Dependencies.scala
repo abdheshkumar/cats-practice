@@ -51,12 +51,17 @@ object Dependencies {
     "org.http4s" %% "http4s-dsl"          % http4sVersion,
     "org.http4s" %% "http4s-blaze-server" % http4sVersion,
     "org.http4s" %% "http4s-blaze-client" % http4sVersion,
-    "org.http4s" %% "http4s-circe" % http4sVersion excludeAll(
-      ExclusionRule(organization = "io.circe"),
-      ExclusionRule(organization = "org.spire-math")))
+    "org.http4s" %% "http4s-circe"        % http4sVersion excludeAll (ExclusionRule(
+      organization = "io.circe"),
+    ExclusionRule(organization = "org.spire-math"))
+  )
 
   val pureconfig = Seq(
     "com.github.pureconfig" %% "pureconfig" % "0.9.2"
+  )
+
+  val refined = Seq(
+    "eu.timepit" %% "refined" % "0.9.2"
   )
   val alpakka = Seq(
     "com.amazonaws"      % "aws-java-sdk-core"         % AwsSdkVersion,
