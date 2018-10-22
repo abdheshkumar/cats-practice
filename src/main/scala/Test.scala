@@ -1,3 +1,6 @@
+import com.typesafe.config.Config
+import pureconfig.error.ConfigReaderFailures
+
 import scala.annotation.tailrec
 
 object Test extends App {

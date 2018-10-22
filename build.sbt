@@ -11,13 +11,13 @@ lazy val root = project
   .settings(
     name := "cats-practice",
     version := "1.0",
-    scalaVersion := "2.12.6",
+    scalaVersion := "2.12.7",
     scalacOptions ++= Seq("-Ypartial-unification"),
     scalafmtOnCompile := true,
     //scalacOptions ++= ScalaC.options,
     libraryDependencies ++= circeLibrary ++ `akka-http` ++ freestyle ++ scalaTest ++
       `cats-effect` ++ cats ++ elastic4s ++ jose4j ++ alpakka ++ kantanCsv ++ shapeless ++ randomData ++ quill ++
-      http4s ++ `meow-mtl` ++ pureconfig ++ refined,
+      http4s ++ `meow-mtl` ++ pureconfig ++ refined ++ scalaZ,
     addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.4"),
     addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full))
   .settings(macroAnnotationSettings)
