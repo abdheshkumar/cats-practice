@@ -20,7 +20,8 @@ object KleisliApp extends App {
 
   def flatMap: Boolean = {
     val compose = getNumberFromDbIO().flatMap { dbNumber =>
-      processNumberIO(dbNumber).flatMap { number => writeNumberToDBIO(number)
+      processNumberIO(dbNumber).flatMap { number =>
+        writeNumberToDBIO(number)
       }
     }
     compose.unsafeRunSync()

@@ -15,7 +15,7 @@ object CirceJsonApp extends App {
   val json =
     json"""{"testKey": "sa", "b": 2}"""
   val expected = json"""{ "type": "ConfigExampleFoo", "this_is_a_field": "sa", "a": 0, "b": 2}"""
-  val s = json"{}"
+  val s        = json"{}"
   println(json)
   implicit val config: Configuration = Configuration.default
 
