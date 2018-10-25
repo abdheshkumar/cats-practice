@@ -1,69 +1,53 @@
 package http4s
 
-import cats.Applicative
-import cats.data.Kleisli
-import cats.effect._
-import cats.syntax.all._
-import org.http4s._
+import cats.data.{Kleisli, OptionT}
+import cats.{Monad, ~>}
 //import org.http4s.circe.CirceEntityDecoder._
+import cats.effect._
+import cats.implicits._
+import org.http4s._
+import org.http4s.dsl.io._
 import org.http4s.server.blaze.BlazeBuilder
 import org.http4s.server.middleware.{CORS, GZip}
-import org.log4s.getLogger
 
 import scala.language.higherKinds
 
-object SFSessionCreation {
-  def apply[F[_], G[_]](http: HttpRoutes[F])(implicit G: Sync[F]): HttpRoutes[F] = Kleisli {
-    req: Request[F] =>
-      req.uri match {
-        case uri if uri.path.endsWith("/verify_otp") || uri.path.endsWith("/login") =>
-          http(req).flatMapF(filterSensitiveInfo(_)) //F[G[Response[G]]]
-        case _ => http(req)
-      }
-  }
+object TransFormResponse {
+  def apply[F[_]: Monad, G[_]](http: Http[F, G], fk: G ~> F)(implicit G: Sync[G]): Http[F, G] =
+    Kleisli { req: Request[G] =>
+      http(req).flatMap(res => transformBody(res, fk))
+    }
 
-  def filterSensitiveInfo[G[_]: Sync](response: Response[G]): G[Option[Response[G]]] = {
+  def transformBody[F[_], G[_]: Sync](response: Response[G], fk: G ~> F): F[Response[G]] = fk {
     response match {
       case Status.Successful(resp) =>
         resp
           .as[String]
-          .map(_.reverse)
+          .map(_.reverse) //Performing an operation on received body. here we can decode body and convert into json
           .map(resp.withEntity(_))
-          .map(r => Some.apply(r))
-      case resp => Option(resp).pure[G]
+      case resp => resp.pure[G]
     }
-  }
-}
-
-object PrintReq {
-
-  private[PrintReq] val logger = getLogger
-
-  def apply[F[_], G[_]](
-                         http: Http[F, G]
-                       )(implicit F: Applicative[F], G: Sync[G]): Http[F, G] = Kleisli { req =>
-    logger.info(
-      s"received request url =>  ${req.uri} method => ${req.method} params => ${req.params}"
-    )
-    http(req)
   }
 }
 
 object BFMiddleWare {
 
-  def apply[F[_], G[_]](http: Http[F, G])(implicit F: Applicative[F], G: Sync[G]): Http[F, G] =
-    CORS(GZip(PrintReq(http)))
+  def apply[F[_], G[_]](
+                      http: Http[F, G],
+                      fk: G ~> F
+  )(implicit F: Sync[F], G: Sync[G]): Http[F, G] =
+    CORS(GZip(TransFormResponse(http, fk)))
 }
 
 object MiddleWareApp extends IOApp {
 
   def app[F[_]: ConcurrentEffect]: fs2.Stream[F, ExitCode] = {
 
-    val services: HttpRoutes[F] = ???
+    val services: Http[OptionT[F, ?], F] = ???
 
     BlazeBuilder[F]
       .bindHttp(8083, "0.0.0.0")
-      .mountService(BFMiddleWare(services) /*Input Http[F, G] and output Http[F, G]*/, "/api")
+      .mountService(BFMiddleWare(services, OptionT.liftK[F]), "/api")
       .serve
   }
 

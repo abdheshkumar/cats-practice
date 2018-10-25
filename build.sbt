@@ -13,7 +13,7 @@ lazy val root = project
     version := "1.0",
     scalaVersion := "2.12.7",
     scalacOptions ++= Seq("-Ypartial-unification"),
-    scalafmtOnCompile := true,
+    //scalafmtOnCompile := true,
     //scalacOptions ++= ScalaC.options,
     libraryDependencies ++= circeLibrary ++ `akka-http` ++ freestyle ++ scalaTest ++
       `cats-effect` ++ cats ++ elastic4s ++ jose4j ++ alpakka ++ kantanCsv ++ shapeless ++ randomData ++ quill ++
