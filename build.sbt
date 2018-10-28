@@ -21,3 +21,5 @@ lazy val root = project
     addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.4"),
     addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full))
   .settings(macroAnnotationSettings)
+
+resolvers += Resolver.sonatypeRepo("snapshots")
