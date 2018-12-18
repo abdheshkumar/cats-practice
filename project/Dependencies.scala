@@ -4,7 +4,7 @@ import sbt._
 object Dependencies {
   lazy val circeVersion = "0.10.0"
   lazy val freesV = "0.6.3"
-  val elastic4sVersion = "6.3.4"
+  val elastic4sVersion = "6.4.0"
   val http4sVersion = "0.19.0"
   val alpakkaV = "0.18"
   val meowMtl = "0.1.2"

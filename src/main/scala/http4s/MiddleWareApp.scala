@@ -2,6 +2,7 @@ package http4s
 
 import cats.data.{Kleisli, OptionT}
 import cats.{Monad, ~>}
+import io.circe.Json
 //import org.http4s.circe.CirceEntityDecoder._
 import cats.effect._
 import cats.implicits._
@@ -13,8 +14,10 @@ import org.http4s.server.middleware.{CORS, GZip}
 import scala.language.higherKinds
 
 object TransFormResponse {
-  def apply[F[_]: Monad, G[_]](http: Http[F, G], fk: G ~> F)(implicit G: Sync[G]): Http[F, G] =
+  def apply[F[_] : Monad, G[_]](http: Http[F, G], fk: G ~> F)(implicit G: Sync[G]): Http[F, G] =
     Kleisli { req: Request[G] =>
+      val junk: F[Response[G]] =
+        Response[G](status = Status.Forbidden).pure[F]
       http(req).flatMap(res => transformBody(res, fk))
     }
 
@@ -33,15 +36,15 @@ object TransFormResponse {
 object BFMiddleWare {
 
   def apply[F[_], G[_]](
-                      http: Http[F, G],
-                      fk: G ~> F
-  )(implicit F: Sync[F], G: Sync[G]): Http[F, G] =
+                         http: Http[F, G],
+                         fk: G ~> F
+                       )(implicit F: Sync[F], G: Sync[G]): Http[F, G] =
     CORS(GZip(TransFormResponse(http, fk)))
 }
 
 object MiddleWareApp extends IOApp {
 
-  def app[F[_]: ConcurrentEffect]: fs2.Stream[F, ExitCode] = {
+  def app[F[_] : ConcurrentEffect]: fs2.Stream[F, ExitCode] = {
 
     val services: Http[OptionT[F, ?], F] = ???
 

@@ -1,10 +1,11 @@
-/*
+
 package elastic
 
 import com.sksamuel.elastic4s.IndexAndTypes
 import com.sksamuel.elastic4s.http.ElasticDsl._
 import com.sksamuel.elastic4s.json.XContentFactory
 import com.sksamuel.elastic4s.searches.queries.term.TermsQuery
+
 object ElasticSearchApp extends ElasticClient {
   val queries = searchWithType(IndexAndTypes("readmodels", "service_numbers"))
     .query(
@@ -23,10 +24,10 @@ object ElasticSearchApp extends ElasticClient {
   builder.endArray()
 
   println(builder.string())
-  /*val result = client.execute(multi(queries)).await
+  val result = client.execute(multi(queries)).await
   result.map {
     out =>
       println(out)
-  }*/
+  }
 }
- */
+
