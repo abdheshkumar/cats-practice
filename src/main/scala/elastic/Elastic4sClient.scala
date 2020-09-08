@@ -1,11 +1,12 @@
 
 package elastic
 
-import com.sksamuel.elastic4s.http.{ElasticClient, ElasticProperties}
+import com.sksamuel.elastic4s.http.JavaClient
+import com.sksamuel.elastic4s.{ElasticClient, ElasticProperties}
 import org.apache.http.auth.{AuthScope, UsernamePasswordCredentials}
 import org.apache.http.impl.client.BasicCredentialsProvider
 
-trait ElasticClient extends App {
+trait Elastic4sClient extends App {
   lazy val provider = {
     val provider = new BasicCredentialsProvider
     val credentials = new UsernamePasswordCredentials("elastic", "abdhesh")
@@ -13,6 +14,6 @@ trait ElasticClient extends App {
     provider
   }
 
-  val client = ElasticClient(ElasticProperties("http://localhost:9200"))
+  val client = ElasticClient(JavaClient(ElasticProperties("http://localhost:9200")))
 }
 

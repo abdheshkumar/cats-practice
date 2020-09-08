@@ -1,3 +1,4 @@
+/*
 object StringOpsMap extends App {
 
   import scala.reflect.runtime.{universe => ru}
@@ -15,3 +16,4 @@ object StringOpsMap extends App {
   val __ = Predef.StringCanBuildFrom
   val _  = Predef.fallbackStringCanBuildFrom[Int]
 }
+*/

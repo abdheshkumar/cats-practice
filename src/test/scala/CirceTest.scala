@@ -5,9 +5,8 @@ import io.circe.generic.extras.auto._
 import io.circe.literal._
 import org.scalacheck.{Arbitrary, Gen}
 import org.scalacheck.Arbitrary.arbitrary
-import org.scalatest.FlatSpec
-import org.scalatest.exceptions.GeneratorDrivenPropertyCheckFailedException
-import org.scalatest.prop.GeneratorDrivenPropertyChecks
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks
 
 object localExamples {
   sealed trait ConfigExampleBase
@@ -43,7 +42,7 @@ object localExamples {
 
 }
 
-class ConfiguredAutoDerivedSuite extends FlatSpec with GeneratorDrivenPropertyChecks {
+class ConfiguredAutoDerivedSuite extends AnyFlatSpec with ScalaCheckPropertyChecks {
   import localExamples._
   implicit val arbitraryConfiguration: Arbitrary[Configuration] = Arbitrary(genConfiguration)
   "Configuration#transformMemberNames" should "support member name transformation using snake_case" in forAll {

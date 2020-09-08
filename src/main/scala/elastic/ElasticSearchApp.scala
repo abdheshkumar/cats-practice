@@ -1,13 +1,19 @@
-
 package elastic
 
-import com.sksamuel.elastic4s.IndexAndTypes
-import com.sksamuel.elastic4s.http.ElasticDsl._
+import com.sksamuel.elastic4s.ElasticDsl._
 import com.sksamuel.elastic4s.json.XContentFactory
-import com.sksamuel.elastic4s.searches.queries.term.TermsQuery
+import com.sksamuel.elastic4s.requests.searches.{
+  MultiSearchRequest,
+  MultiSearchResponse,
+  SearchRequest
+}
+import com.sksamuel.elastic4s.requests.searches.queries.term.TermsQuery
 
-object ElasticSearchApp extends ElasticClient {
-  val queries = searchWithType(IndexAndTypes("readmodels", "service_numbers"))
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+
+object ElasticSearchApp extends Elastic4sClient {
+  val queries = search("service_numbers")
     .query(
       boolQuery()
         .should(termsQuery("number", List.empty[String]))
@@ -16,7 +22,7 @@ object ElasticSearchApp extends ElasticClient {
   /*.termQuery("number", 32323)
     .termQuery("test", 3343)*/
 
-  val t = TermsQuery[String]("fieldName", values = List.empty[String])
+  val t       = TermsQuery[String]("fieldName", values = List.empty[String])
   val builder = XContentFactory.jsonBuilder().startObject("terms")
 
   builder.startArray(t.field)
@@ -24,10 +30,8 @@ object ElasticSearchApp extends ElasticClient {
   builder.endArray()
 
   println(builder.string())
-  val result = client.execute(multi(queries)).await
-  result.map {
-    out =>
-      println(out)
+  val result = client.execute[MultiSearchRequest, MultiSearchResponse, Future](multi(queries)).await
+  result.map { out =>
+    println(out)
   }
 }
-

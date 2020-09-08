@@ -1,3 +1,4 @@
+/*
 package csv
 
 import akka.stream.scaladsl.{Flow, Source}
@@ -5,7 +6,6 @@ import akkahttpcirce.AkkaApp
 import cats.Functor
 import cats.syntax.functor._
 
-import scala.language.higherKinds
 
 object AkkaStreamFunctor extends AkkaApp with App {
 
@@ -30,3 +30,4 @@ object Message {
   }
 
 }
+*/

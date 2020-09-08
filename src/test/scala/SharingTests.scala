@@ -1,6 +1,7 @@
-import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 trait SharableSpec extends Matchers {
-  self: FlatSpec =>
+  self: AnyFlatSpec =>
 
   def nonEmpty(string: String) = {
     string should "be non-empty" in {
@@ -9,7 +10,7 @@ trait SharableSpec extends Matchers {
   }
 }
 
-class SharingTests extends FlatSpec with SharableSpec {
+class SharingTests extends AnyFlatSpec with SharableSpec {
 
   it should behave like nonEmpty("hello")
   it should behave like nonEmpty("hello test")

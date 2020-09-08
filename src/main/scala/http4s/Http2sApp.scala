@@ -11,9 +11,9 @@ import org.http4s._
 import org.http4s.circe.CirceEntityDecoder._
 import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
-import org.http4s.server.blaze.BlazeBuilder
-
-import scala.language.higherKinds
+import org.http4s.server.blaze.{BlazeBuilder, BlazeServerBuilder}
+import org.http4s.server.middleware.Logger
+import org.http4s.implicits._
 
 case class User(username: String, age: Int)
 
@@ -167,7 +167,7 @@ class UserRoutesMTL[F[_]: Sync](userAlgebra: UserAlgebra[F])(
       }
   }
 
-  val routes: HttpRoutes[F] = H.handle(httpRoutes)
+  val routes: HttpApp[F] = H.handle(httpRoutes).orNotFound
 
 }
 
@@ -188,12 +188,15 @@ object Http2sApp extends IOApp {
 
   import com.olegpy.meow.hierarchy._
 
-  def app[F[_]: ConcurrentEffect]: fs2.Stream[F, ExitCode] = {
+  def app[F[_]: ConcurrentEffect](
+                      implicit T: Timer[F],
+                      C: ContextShift[F]): fs2.Stream[F, ExitCode] = {
     implicit def userHttpErrorHandler: HttpErrorHandler[F, UserError] = new UserHttpErrorHandler[F]
-
-    BlazeBuilder[F]
+    val finalHttpApp =
+      Logger.httpApp(true, true)(new UserRoutesMTL[F](UserInterpreter.create[F]).routes)
+    BlazeServerBuilder[F]
       .bindHttp(8083, "0.0.0.0")
-      .mountService(new UserRoutesMTL[F](UserInterpreter.create[F]).routes, "/")
+      .withHttpApp(finalHttpApp)
       .serve
   }
 
