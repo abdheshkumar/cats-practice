@@ -8,7 +8,7 @@ object Dependencies {
   val http4sVersion             = "0.21.0-M4"
   val alpakkaV                  = "2.0.2"
   val meowMtl                   = "0.3.0-M1"
-  val AwsSdkVersion             = "1.11.226"
+  val AwsSdkVersion             = "1.12.331"
   val quillV                    = "3.5.2"
   private val catsVersion       = "2.2.0"
   private val catsEffectVersion = "2.2.0"
