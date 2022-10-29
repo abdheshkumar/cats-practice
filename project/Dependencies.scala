@@ -26,7 +26,7 @@ object Dependencies {
   ).map(_ % circeVersion)
 
   val scalaZ = Seq(
-    "org.scalaz" %% "scalaz-core" % "7.3.2"
+    "org.scalaz" %% "scalaz-core" % "7.3.6"
   )
 
   lazy val `akka-http` = Seq(
