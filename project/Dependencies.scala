@@ -9,7 +9,7 @@ object Dependencies {
   val alpakkaV                  = "2.0.2"
   val meowMtl                   = "0.3.0-M1"
   val AwsSdkVersion             = "1.12.331"
-  val quillV                    = "3.5.2"
+  val quillV                    = "3.19.0"
   private val catsVersion       = "2.2.0"
   private val catsEffectVersion = "2.2.0"
   val scalazVersion             = "7.2.26"
