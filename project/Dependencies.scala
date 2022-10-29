@@ -41,7 +41,7 @@ object Dependencies {
   )
 
   val kantanCsv =
-    Seq("com.nrinaudo" %% "kantan.csv" % "0.7.0", "com.nrinaudo" %% "kantan.csv-generic" % "0.6.1")
+    Seq("com.nrinaudo" %% "kantan.csv" % "0.7.0", "com.nrinaudo" %% "kantan.csv-generic" % "0.7.0")
 
   val shapeless = Seq(
     "com.chuusai" %% "shapeless" % "2.3.10"
