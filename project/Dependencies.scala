@@ -31,7 +31,7 @@ object Dependencies {
 
   lazy val `akka-http` = Seq(
     "com.typesafe.akka" %% "akka-http"         % "10.4.0",
-    "com.typesafe.akka" %% "akka-http-testkit" % "10.2.0" % Test
+    "com.typesafe.akka" %% "akka-http-testkit" % "10.4.0" % Test
   )
 
   lazy val scalaTest = Seq(
