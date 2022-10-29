@@ -6,7 +6,7 @@ object Dependencies {
   lazy val freesV               = "0.8.2"
   val elastic4sVersion          = "7.9.0"
   val http4sVersion             = "0.21.0-M4"
-  val alpakkaV                  = "2.0.2"
+  val alpakkaV                  = "5.0.0"
   val meowMtl                   = "0.3.0-M1"
   val AwsSdkVersion             = "1.12.331"
   val quillV                    = "3.19.0"
