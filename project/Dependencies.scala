@@ -44,7 +44,7 @@ object Dependencies {
     Seq("com.nrinaudo" %% "kantan.csv" % "0.6.1", "com.nrinaudo" %% "kantan.csv-generic" % "0.6.1")
 
   val shapeless = Seq(
-    "com.chuusai" %% "shapeless" % "2.3.3"
+    "com.chuusai" %% "shapeless" % "2.3.10"
   )
   val randomData = Seq(
     "com.danielasfregola" %% "random-data-generator" % "2.9"
