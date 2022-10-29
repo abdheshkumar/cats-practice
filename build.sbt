@@ -10,8 +10,7 @@ lazy val root = project
     //scalafmtOnCompile := true,
     //scalacOptions ++= ScalaC.options,
     libraryDependencies ++= circeLibrary ++ pureconfig ++ `akka-http` ++ elastic4s ++ `cats-effect` ++ cats ++ scalaTest ++
-      jose4j ++ alpakka ++ kantanCsv ++ shapeless ++ randomData ++ quill ++ http4s ++ `meow-mtl` ++ refined ++ scalaZ,
-      addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.11.0" cross CrossVersion.full)
+      jose4j ++ alpakka ++ kantanCsv ++ shapeless ++ randomData ++ quill ++ http4s ++ `meow-mtl` ++ refined)
   )
 
 resolvers += Resolver.sonatypeRepo("snapshots")
