@@ -66,7 +66,7 @@ object Dependencies {
   )
 
   val refined = Seq(
-    "eu.timepit" %% "refined" % "0.9.15"
+    "eu.timepit" %% "refined" % "0.10.1"
   )
   val alpakka = Seq(
     "com.amazonaws"      % "aws-java-sdk-core"         % AwsSdkVersion,
