@@ -14,7 +14,7 @@ object Dependencies {
   private val catsEffectVersion = "2.2.0"
   val scalazVersion             = "7.2.26"
 
-  val protobuf = "com.thesamet.scalapb" %% "scalapb-runtime" % "0.7.4" % "protobuf"
+  val protobuf = "com.thesamet.scalapb" %% "scalapb-runtime" % "0.11.12-tmp" % "protobuf"
 
   lazy val circeLibrary = Seq(
     "io.circe" %% "circe-core",
