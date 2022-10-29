@@ -11,7 +11,7 @@ object Dependencies {
   val AwsSdkVersion             = "1.12.331"
   val quillV                    = "4.6.0"
   private val catsVersion       = "2.8.0"
-  private val catsEffectVersion = "2.5.5"
+  private val catsEffectVersion = "3.4-148221d"
   val scalazVersion             = "7.2.26"
 
   val protobuf = "com.thesamet.scalapb" %% "scalapb-runtime" % "0.11.12-tmp" % "protobuf"
