@@ -5,7 +5,7 @@ lazy val root = project
   .settings(
     name := "cats-practice",
     version := "1.0",
-    scalaVersion := "2.13.3",
+    scalaVersion := "2.13.10",
     //scalacOptions ++= Seq("-Ypartial-unification"),
     //scalafmtOnCompile := true,
     //scalacOptions ++= ScalaC.options,
