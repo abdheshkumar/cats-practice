@@ -78,7 +78,7 @@ object Dependencies {
     "io.frees" %% "frees-effects" % freesV
   )
 
-  val jose4j = Seq("org.bitbucket.b_c" % "jose4j" % "0.9.1")
+  val jose4j = Seq("org.bitbucket.b_c" % "jose4j" % "0.9.2")
   val elastic4s = Seq(
     "com.sksamuel.elastic4s" %% "elastic4s-core"          % elastic4sVersion,
     "com.sksamuel.elastic4s" %% "elastic4s-testkit"       % elastic4sVersion % Test,
