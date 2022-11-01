@@ -17,17 +17,14 @@ object Dependencies {
   val protobuf = "com.thesamet.scalapb" %% "scalapb-runtime" % "0.11.12-tmp" % "protobuf"
 
   lazy val circeLibrary = Seq(
-    "io.circe" %% "circe-core",
-    "io.circe" %% "circe-generic",
-    "io.circe" %% "circe-parser",
-    "io.circe" %% "circe-generic-extras",
-    "io.circe" %% "circe-literal",
-    "io.circe" %% "circe-jawn"
-  ).map(_ % circeVersion)
-
-  val scalaZ = Seq(
-    "org.scalaz" %% "scalaz-core" % "7.3.6"
+    "io.circe" %% "circe-core" % circeVersion,
+    "io.circe" %% "circe-generic" % circeVersion,
+    "io.circe" %% "circe-parser" % circeVersion,
+    "io.circe" %% "circe-generic-extras" % circeVersion,
+    "io.circe" %% "circe-literal" % circeVersion,
+    "io.circe" %% "circe-jawn" % circeVersion
   )
+
 
   lazy val `akka-http` = Seq(
     "com.typesafe.akka" %% "akka-http"         % "10.4.0",
@@ -84,12 +81,11 @@ object Dependencies {
   val jose4j = Seq("org.bitbucket.b_c" % "jose4j" % "0.9.1")
   val elastic4s = Seq(
     "com.sksamuel.elastic4s" %% "elastic4s-core"          % elastic4sVersion,
-    "com.sksamuel.elastic4s" %% "elastic4s-testkit"       % elastic4sVersion % "test",
+    "com.sksamuel.elastic4s" %% "elastic4s-testkit"       % elastic4sVersion % Test,
     "com.sksamuel.elastic4s" %% "elastic4s-json-circe"    % elastic4sVersion,
     "com.sksamuel.elastic4s" %% "elastic4s-client-esjava" % elastic4sVersion
   )
 
-  val cats = Seq("org.typelevel" %% "cats-core", "org.typelevel" %% "cats-kernel")
-    .map(_ % catsVersion) ++ Seq("org.typelevel" %% "cats-testkit" % catsVersion % Test)
+  val cats = Seq("org.typelevel" %% "cats-core" % catsVersion, "org.typelevel" %% "cats-kernel" % catsVersion) ++ Seq("org.typelevel" %% "cats-testkit" % catsVersion % Test)
   val `cats-effect` = Seq("org.typelevel" %% "cats-effect" % catsEffectVersion)
 }
