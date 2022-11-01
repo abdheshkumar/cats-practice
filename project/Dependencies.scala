@@ -2,7 +2,7 @@ import sbt.Keys.resolvers
 import sbt._
 
 object Dependencies {
-  lazy val circeVersion         = "0.13.0"
+  lazy val circeVersion         = "0.14.3"
   lazy val freesV               = "0.8.2"
   val elastic4sVersion          = "8.4.2"
   val http4sVersion             = "0.23.16"
