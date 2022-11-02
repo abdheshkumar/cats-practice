@@ -1,13 +1,8 @@
-import sbt.Keys.resolvers
 import sbt._
 
 object Dependencies {
   lazy val circeVersion         = "0.14.3"
-  val elastic4sVersion          = "8.4.2"
   val http4sVersion             = "0.23.16"
-  val alpakkaV                  = "5.0.0"
-  val AwsSdkVersion             = "1.12.332"
-  val quillV                    = "4.6.0"
   private val catsVersion       = "2.8.0"
   private val catsEffectVersion = "3.4-148221d"
 
@@ -37,9 +32,6 @@ object Dependencies {
     "com.danielasfregola" %% "random-data-generator" % "2.9"
   )
 
-  val quill = Seq(
-    "io.getquill" %% "quill-cassandra" % quillV
-  )
   val http4s = Seq(
     "org.http4s" %% "http4s-dsl"          % http4sVersion,
     "org.http4s" %% "http4s-blaze-server" % "0.23.12",

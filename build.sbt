@@ -8,5 +8,5 @@ lazy val root = project
     scalaVersion := "2.13.10",
     addCompilerPlugin("org.typelevel" % "kind-projector" % "0.13.2" cross CrossVersion.full),
     libraryDependencies ++= circeLibrary ++ pureconfig ++ `cats-effect` ++ cats ++ scalaTest ++
-      kantanCsv ++ shapeless ++ randomData ++ quill ++ http4s ++ refined
+      kantanCsv ++ shapeless ++ randomData ++ http4s ++ refined
   )
