@@ -1,9 +1,10 @@
 package io
 
 import cats.effect.IO
-
+import cats.effect.unsafe.IORuntime
 object IOMonadApp extends App {
-
+  implicit val runtime: IORuntime = cats.effect.unsafe.IORuntime.global
+  
   val ioa = IO {
     println("hey!")
   }

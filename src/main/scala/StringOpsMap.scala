@@ -1,4 +1,4 @@
-/*
+package zero
 object StringOpsMap extends App {
 
   import scala.reflect.runtime.{universe => ru}
@@ -13,7 +13,5 @@ object StringOpsMap extends App {
       "123".map(_.toInt)
     }.tree
   }
-  val __ = Predef.StringCanBuildFrom
-  val _  = Predef.fallbackStringCanBuildFrom[Int]
 }
-*/
+

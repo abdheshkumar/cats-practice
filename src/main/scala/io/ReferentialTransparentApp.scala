@@ -1,10 +1,11 @@
 package io
+import cats.effect.unsafe.IORuntime
 import cats.effect.{ExitCode, IOApp}
-
+import cats.implicits._
+import cats.effect.IO
 object ReferentialTransparentApp extends IOApp {
-  import cats.implicits._
-  import cats.effect.IO
 
+  override implicit val runtime: IORuntime = cats.effect.unsafe.IORuntime.global
   def compute1(): Int = { println("compute1"); 1 }
   def compute2(): Int = { println("compute2"); 2 }
 

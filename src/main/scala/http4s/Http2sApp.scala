@@ -2,16 +2,15 @@ package http4s
 
 import cats.data.{Kleisli, OptionT}
 import cats.effect._
-import cats.effect.concurrent.Ref
 import cats.syntax.all._
 import cats.{ApplicativeError, MonadError}
 import io.circe.generic.auto._
+import org.http4s.circe.CirceEntityCodec._
+import org.http4s.circe._
 import io.circe.syntax._
 import org.http4s._
-import org.http4s.circe.CirceEntityDecoder._
-import org.http4s.circe._
 import org.http4s.dsl.Http4sDsl
-import org.http4s.server.blaze.{BlazeBuilder, BlazeServerBuilder}
+import org.http4s.blaze.server.BlazeServerBuilder
 import org.http4s.server.middleware.Logger
 import org.http4s.implicits._
 
@@ -19,7 +18,7 @@ case class User(username: String, age: Int)
 
 case class UserUpdateAge(age: Int)
 
-sealed trait UserError extends Exception
+sealed trait UserError extends Throwable
 
 case class UserAlreadyExists(username: String) extends UserError
 
@@ -34,7 +33,7 @@ trait UserAlgebra[F[_]] {
 
   def updateAge(username: String, age: Int): F[Unit]
 }
-//dheeru9@0abdh
+
 object UserInterpreter {
 
   def create[F[_]](implicit F: Sync[F]): UserAlgebra[F] = new UserAlgebra[F] {
@@ -67,7 +66,7 @@ object UserInterpreter {
 
 }
 
-class UserRoutes[F[_]: Sync](userAlgebra: UserAlgebra[F]) extends Http4sDsl[F] {
+class UserRoutes[F[_]: Async](userAlgebra: UserAlgebra[F]) extends Http4sDsl[F] {
 
   import org.http4s.HttpRoutes
 
@@ -92,7 +91,7 @@ class UserRoutes[F[_]: Sync](userAlgebra: UserAlgebra[F]) extends Http4sDsl[F] {
 
 }
 
-class UserRoutesAlt[F[_]: Sync](userAlgebra: UserAlgebra[F]) extends Http4sDsl[F] {
+class UserRoutesAlt[F[_]: Async](userAlgebra: UserAlgebra[F]) extends Http4sDsl[F] {
 
   val routes: HttpRoutes[F] = HttpRoutes.of[F] {
 
@@ -130,7 +129,7 @@ trait HttpErrorHandler[F[_], E <: Throwable] {
 }
 
 object RoutesHttpErrorHandler {
-  def apply[F[_]: ApplicativeError[?[_], E], E <: Throwable](
+  def apply[F[_]: ApplicativeError[*[_], E], E <: Throwable](
                       routes: HttpRoutes[F]
   )(handler: E => F[Response[F]]): HttpRoutes[F] =
     Kleisli { req =>
@@ -144,7 +143,7 @@ object HttpErrorHandler {
   def apply[F[_], E <: Throwable](implicit ev: HttpErrorHandler[F, E]): HttpErrorHandler[F, E] = ev
 }
 
-class UserRoutesMTL[F[_]: Sync](userAlgebra: UserAlgebra[F])(
+class UserRoutesMTL[F[_]: Async](userAlgebra: UserAlgebra[F])(
                     implicit H: HttpErrorHandler[F, UserError]
 ) extends Http4sDsl[F] {
 
@@ -171,10 +170,10 @@ class UserRoutesMTL[F[_]: Sync](userAlgebra: UserAlgebra[F])(
 
 }
 
-class UserHttpErrorHandler[F[_]: MonadError[?[_], UserError]]
+class UserHttpErrorHandler[F[_]: ApplicativeError[*[_], Throwable]]
     extends HttpErrorHandler[F, UserError]
     with Http4sDsl[F] {
-  private val handler: UserError => F[Response[F]] = {
+  private val handler: Throwable => F[Response[F]] = {
     case InvalidUserAge(age)         => BadRequest(s"Invalid age $age".asJson)
     case UserAlreadyExists(username) => Conflict(username.asJson)
     case UserNotFound(username)      => NotFound(username.asJson)
@@ -186,11 +185,7 @@ class UserHttpErrorHandler[F[_]: MonadError[?[_], UserError]]
 
 object Http2sApp extends IOApp {
 
-  import com.olegpy.meow.hierarchy._
-
-  def app[F[_]: ConcurrentEffect](
-                      implicit T: Timer[F],
-                      C: ContextShift[F]): fs2.Stream[F, ExitCode] = {
+  def app[F[_]: Async](): fs2.Stream[F, ExitCode] = {
     implicit def userHttpErrorHandler: HttpErrorHandler[F, UserError] = new UserHttpErrorHandler[F]
     val finalHttpApp =
       Logger.httpApp(true, true)(new UserRoutesMTL[F](UserInterpreter.create[F]).routes)

@@ -6,7 +6,7 @@ object TraverseApp extends App {
   import cats.implicits._
 
   val segments: List[Either[Throwable, Int]] = List(1.asRight[Throwable])
-  val result: Either[Throwable, List[Int]]   = segments.sequence[Either[Throwable, ?], Int] //segments.sequence will also work
+  val result: Either[Throwable, List[Int]]   = segments.sequence[Either[Throwable, *], Int] //segments.sequence will also work
   println(result)
   Nested(segments)
 }

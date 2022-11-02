@@ -9,7 +9,6 @@ import cats.implicits._
 
 object DecodeAndEncodeDefault extends App {
 
-  /*
   implicit val withDefaultsConfig: Configuration = Configuration.default.withDefaults
 
   val printer: Printer = Printer.noSpaces.copy(dropNullValues = true)
@@ -21,7 +20,7 @@ object DecodeAndEncodeDefault extends App {
   val json: Json = parse(rawJson).getOrElse(Json.Null)
 
   println(json.as[Test])
-  println(Test(key = None).asJson.pretty(printer))*/
+  println(Test(key = None).asJson.printWith(printer))
 
   case class Students(name: String, classId: String)
 

@@ -30,7 +30,6 @@ object ZeroDependencyLibrary {
     implicit def toAsyncOps[M[_], A](ma: M[A]): AsyncOps[M, A] = new AsyncOps[M, A](ma)
   }
 
-  object async extends AsyncSyntax
 
   trait FutureInstance {
     implicit def asyncFutureInstance(implicit ec: ExecutionContext): Async[Future] =

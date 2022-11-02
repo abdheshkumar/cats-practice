@@ -1,27 +1,23 @@
 package http4s
 
 import cats.data.{Kleisli, OptionT}
-import cats.{~>, Monad}
-import org.http4s.dsl.Http4sDsl
-import org.http4s.server.blaze.BlazeServerBuilder
-
-import scala.concurrent.ExecutionContext.global
-//import org.http4s.circe.CirceEntityDecoder._
 import cats.effect._
 import cats.implicits._
+import cats.~>
 import org.http4s._
+import org.http4s.blaze.server.BlazeServerBuilder
+import org.http4s.circe.CirceEntityCodec._
+import org.http4s.dsl.Http4sDsl
 import org.http4s.implicits._
-import org.http4s.dsl.io._
-import org.http4s.server.blaze.BlazeBuilder
 import org.http4s.server.middleware.{CORS, GZip}
 
 object TransFormResponse {
-  def apply[F[_]: Monad, G[_]](http: Http[F, G], fk: G ~> F)(implicit G: Sync[G]): Http[F, G] =
+  def apply[F[_]: Async, G[_]](http: Http[F, G], fk: G ~> F)(implicit G: Async[G]): Http[F, G] =
     Kleisli { req: Request[G] =>
       http(req).flatMap(res => transformBody(res, fk))
     }
 
-  def transformBody[F[_], G[_]: Sync](response: Response[G], fk: G ~> F): F[Response[G]] = fk {
+  def transformBody[F[_], G[_]: Async](response: Response[G], fk: G ~> F): F[Response[G]] = fk {
     response match {
       case Status.Successful(resp) =>
         resp
@@ -38,12 +34,12 @@ object BFMiddleWare {
   def apply[F[_], G[_]](
                       http: Http[F, G],
                       fk: G ~> F
-  )(implicit F: Sync[F], G: Sync[G]): Http[F, G] =
+  )(implicit F: Async[F], G: Async[G]): Http[F, G] =
     CORS(GZip(TransFormResponse(http, fk)))
 
 }
 
-class MyService[F[_]: Effect] extends Http4sDsl[F] {
+class MyService[F[_]:Async] extends Http4sDsl[F] {
   def myService: HttpRoutes[F] = HttpRoutes.of[F] {
     case GET -> Root / "hello" / name =>
       Ok(s"Hello, $name.")
@@ -52,9 +48,7 @@ class MyService[F[_]: Effect] extends Http4sDsl[F] {
 
 object MiddleWareApp extends IOApp {
 
-  def app[F[_]: ConcurrentEffect](
-                      implicit T: Timer[F],
-                      C: ContextShift[F]): fs2.Stream[F, ExitCode] = {
+  def app[F[_]: Async](): fs2.Stream[F, ExitCode] = {
 
     val httpApp: Http[OptionT[F, *], F] = BFMiddleWare(new MyService[F].myService, OptionT.liftK[F])
 

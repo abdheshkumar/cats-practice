@@ -1,5 +1,6 @@
 import cats.effect.IO
-
+import cats.effect.unsafe.IORuntime
+implicit val runtime: IORuntime = cats.effect.unsafe.IORuntime.global
 val ioa = IO {
   println("hey!")
 }

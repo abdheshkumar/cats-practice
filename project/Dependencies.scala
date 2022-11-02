@@ -3,18 +3,13 @@ import sbt._
 
 object Dependencies {
   lazy val circeVersion         = "0.14.3"
-  lazy val freesV               = "0.8.2"
   val elastic4sVersion          = "8.4.2"
   val http4sVersion             = "0.23.16"
   val alpakkaV                  = "5.0.0"
-  val meowMtl                   = "0.3.0-M1"
   val AwsSdkVersion             = "1.12.332"
   val quillV                    = "4.6.0"
   private val catsVersion       = "2.8.0"
   private val catsEffectVersion = "3.4-148221d"
-  val scalazVersion             = "7.2.26"
-
-  val protobuf = "com.thesamet.scalapb" %% "scalapb-runtime" % "0.11.12-tmp" % "protobuf"
 
   lazy val circeLibrary = Seq(
     "io.circe" %% "circe-core" % circeVersion,
@@ -25,11 +20,6 @@ object Dependencies {
     "io.circe" %% "circe-jawn" % circeVersion
   )
 
-
-  lazy val `akka-http` = Seq(
-    "com.typesafe.akka" %% "akka-http"         % "10.4.0",
-    "com.typesafe.akka" %% "akka-http-testkit" % "10.4.0" % Test
-  )
 
   lazy val scalaTest = Seq(
     "org.scalatest"     %% "scalatest"       % "3.2.14"   % Test,
@@ -50,7 +40,6 @@ object Dependencies {
   val quill = Seq(
     "io.getquill" %% "quill-cassandra" % quillV
   )
-  val `meow-mtl` = Seq("com.olegpy" %% "meow-mtl" % meowMtl)
   val http4s = Seq(
     "org.http4s" %% "http4s-dsl"          % http4sVersion,
     "org.http4s" %% "http4s-blaze-server" % "0.23.12",
@@ -64,26 +53,6 @@ object Dependencies {
 
   val refined = Seq(
     "eu.timepit" %% "refined" % "0.10.1"
-  )
-  val alpakka = Seq(
-    "com.amazonaws"      % "aws-java-sdk-core"         % AwsSdkVersion,
-    "com.lightbend.akka" %% "akka-stream-alpakka-s3"   % alpakkaV,
-    "com.lightbend.akka" %% "akka-stream-alpakka-file" % alpakkaV,
-    "com.lightbend.akka" %% "akka-stream-alpakka-csv"  % alpakkaV
-  )
-  lazy val freestyle = Seq(
-    "io.frees" %% "frees-core"    % freesV,
-    "io.frees" %% "frees-fetch"   % freesV,
-    "io.frees" %% "frees-logging" % freesV,
-    "io.frees" %% "frees-effects" % freesV
-  )
-
-  val jose4j = Seq("org.bitbucket.b_c" % "jose4j" % "0.9.2")
-  val elastic4s = Seq(
-    "com.sksamuel.elastic4s" %% "elastic4s-core"          % elastic4sVersion,
-    "com.sksamuel.elastic4s" %% "elastic4s-testkit"       % elastic4sVersion % Test,
-    "com.sksamuel.elastic4s" %% "elastic4s-json-circe"    % elastic4sVersion,
-    "com.sksamuel.elastic4s" %% "elastic4s-client-esjava" % elastic4sVersion
   )
 
   val cats = Seq("org.typelevel" %% "cats-core" % catsVersion, "org.typelevel" %% "cats-kernel" % catsVersion) ++ Seq("org.typelevel" %% "cats-testkit" % catsVersion % Test)

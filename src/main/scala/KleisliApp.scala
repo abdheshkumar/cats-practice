@@ -3,8 +3,10 @@ import cats.Id
 import cats.effect.IO
 import cats.data.Kleisli
 import cats.implicits._
+import cats.effect.unsafe.IORuntime
 object KleisliApp extends App {
 
+  implicit val runtime: IORuntime = cats.effect.unsafe.IORuntime.global
 
   val getNumberFromDb: Unit => Int    = _ => 2
   val processNumber: Int => Int       = _ * 2

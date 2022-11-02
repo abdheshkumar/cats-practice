@@ -4,3 +4,4 @@ project/target
 .bloop
 .metals
 project/metals.sbt
+.bsp

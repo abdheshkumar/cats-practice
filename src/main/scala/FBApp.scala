@@ -3,7 +3,7 @@ import cats.data.OptionT
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import cats.implicits._
-object ScalaZApp {
+object FBApp {
   trait Terminal[C[_]] {
     def read: C[String]
     def write(t: String): C[Unit]

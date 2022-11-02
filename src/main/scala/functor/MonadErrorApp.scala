@@ -14,13 +14,13 @@ object MonadErrorApp extends App {
     else M.raiseError(new Exception("Name is not valid"))
 
   val result: Either[Throwable, (String, Int)] = for {
-    name <- validateName[Either[Throwable, ?]]("Test hello")
-    age  <- validateAge[Either[Throwable, ?]](25)
+    name <- validateName[Either[Throwable, *]]("Test hello")
+    age  <- validateAge[Either[Throwable, *]](25)
   } yield (name, age)
 
   val resultEither = for {
-    name <- validateName[Either[Throwable, ?]]("Test hello").attemptT
-    age  <- validateAge[Either[Throwable, ?]](25).attemptT
+    name <- validateName[Either[Throwable, *]]("Test hello").attemptT
+    age  <- validateAge[Either[Throwable, *]](25).attemptT
   } yield (name, age)
 
   println(resultEither.value)
