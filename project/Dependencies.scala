@@ -3,7 +3,7 @@ import sbt._
 object Dependencies {
   lazy val circeVersion         = "0.14.3"
   val http4sVersion             = "0.23.16"
-  private val catsVersion       = "2.8.0"
+  private val catsVersion       = "2.9.0"
   private val catsEffectVersion = "3.4-148221d"
 
   lazy val circeLibrary = Seq(
