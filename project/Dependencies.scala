@@ -4,7 +4,7 @@ object Dependencies {
   lazy val circeVersion         = "0.14.3"
   val http4sVersion             = "0.23.16"
   private val catsVersion       = "2.9.0"
-  private val catsEffectVersion = "3.4-148221d"
+  private val catsEffectVersion = "3.5-4ba2590"
 
   lazy val circeLibrary = Seq(
     "io.circe" %% "circe-core" % circeVersion,
