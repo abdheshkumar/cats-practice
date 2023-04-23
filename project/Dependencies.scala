@@ -10,7 +10,7 @@ object Dependencies {
     "io.circe" %% "circe-core" % circeVersion,
     "io.circe" %% "circe-generic" % circeVersion,
     "io.circe" %% "circe-parser" % circeVersion,
-    "io.circe" %% "circe-generic-extras" % circeVersion,
+    "io.circe" %% "circe-generic-extras" % "0.14.3",
     "io.circe" %% "circe-literal" % circeVersion,
     "io.circe" %% "circe-jawn" % circeVersion
   )
