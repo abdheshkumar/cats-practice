@@ -44,7 +44,7 @@ object Dependencies {
   )
 
   val refined = Seq(
-    "eu.timepit" %% "refined" % "0.10.3"
+    "eu.timepit" %% "refined" % "0.11.0"
   )
 
   val cats = Seq("org.typelevel" %% "cats-core" % catsVersion, "org.typelevel" %% "cats-kernel" % catsVersion) ++ Seq("org.typelevel" %% "cats-testkit" % catsVersion % Test)
