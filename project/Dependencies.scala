@@ -2,7 +2,7 @@ import sbt._
 
 object Dependencies {
   lazy val circeVersion         = "0.14.5"
-  val http4sVersion             = "0.23.21"
+  val http4sVersion             = "0.23.22"
   private val catsVersion       = "2.9.0"
   private val catsEffectVersion = "3.6-0142603"
 
