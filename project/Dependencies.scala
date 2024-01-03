@@ -35,7 +35,7 @@ object Dependencies {
   val http4s = Seq(
     "org.http4s" %% "http4s-dsl"          % http4sVersion,
     "org.http4s" %% "http4s-blaze-server" % "0.23.15",
-    "org.http4s" %% "http4s-blaze-client" % "0.23.15",
+    "org.http4s" %% "http4s-blaze-client" % "0.23.16",
     "org.http4s" %% "http4s-circe"        % http4sVersion
   )
 
