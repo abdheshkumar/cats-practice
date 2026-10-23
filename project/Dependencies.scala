@@ -40,7 +40,7 @@ object Dependencies {
   )
 
   val pureconfig = Seq(
-    "com.github.pureconfig" %% "pureconfig" % "0.17.8"
+    "com.github.pureconfig" %% "pureconfig" % "0.17.11"
   )
 
   val refined = Seq(
